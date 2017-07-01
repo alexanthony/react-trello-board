@@ -5,9 +5,6 @@ const propTypes = {
   style: PropTypes.object
 }
 
-const galPng = require('../../../assets/images/gal.png')
-const delPng = require('../../../assets/images/del.png')
-
 const Card = props => {
   const { style, item } = props
 
