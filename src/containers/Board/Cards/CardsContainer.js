@@ -3,53 +3,7 @@ import { DropTarget, DragSource } from 'react-dnd'
 
 import Cards from './Cards'
 
-const listSource = {
-  beginDrag(props) {
-    return {
-      id: props.id,
-      x: props.x
-    }
-  },
-  endDrag(props) {
-    props.stopScrolling()
-  }
-}
-
-const listTarget = {
-  canDrop() {
-    return false
-  },
-  hover(props, monitor) {
-    if (!props.isScrolling) {
-      if (window.innerWidth - monitor.getClientOffset().x < 200) {
-        props.startScrolling('toRight')
-      } else if (monitor.getClientOffset().x < 200) {
-        props.startScrolling('toLeft')
-      }
-    } else {
-      if (
-        window.innerWidth - monitor.getClientOffset().x > 200 &&
-        monitor.getClientOffset().x > 200
-      ) {
-        props.stopScrolling()
-      }
-    }
-    const { id: listId } = monitor.getItem()
-    const { id: nextX } = props
-    if (listId !== nextX) {
-      props.moveList(listId, props.x)
-    }
-  }
-}
-
-@DropTarget('list', listTarget, connectDragSource => ({
-  connectDropTarget: connectDragSource.dropTarget()
-}))
-@DragSource('list', listSource, (connectDragSource, monitor) => ({
-  connectDragSource: connectDragSource.dragSource(),
-  isDragging: monitor.isDragging()
-}))
-export default class CardsContainer extends Component {
+class CardsContainer extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     connectDragSource: PropTypes.func.isRequired,
@@ -95,3 +49,51 @@ export default class CardsContainer extends Component {
     )
   }
 }
+
+const listSource = {
+  beginDrag(props) {
+    return {
+      id: props.id,
+      x: props.x
+    }
+  },
+  endDrag(props) {
+    props.stopScrolling()
+  }
+}
+
+const listTarget = {
+  canDrop() {
+    return false
+  },
+  hover(props, monitor) {
+    if (!props.isScrolling) {
+      if (window.innerWidth - monitor.getClientOffset().x < 200) {
+        props.startScrolling('toRight')
+      } else if (monitor.getClientOffset().x < 200) {
+        props.startScrolling('toLeft')
+      }
+    } else {
+      if (
+        window.innerWidth - monitor.getClientOffset().x > 200 &&
+        monitor.getClientOffset().x > 200
+      ) {
+        props.stopScrolling()
+      }
+    }
+    const { id: listId } = monitor.getItem()
+    const { id: nextX } = props
+    if (listId !== nextX) {
+      props.moveList(listId, props.x)
+    }
+  }
+}
+
+export default DropTarget('list', listTarget, connectDragSource => ({
+  connectDropTarget: connectDragSource.dropTarget()
+}))(
+  DragSource('list', listSource, (connectDragSource, monitor) => ({
+    connectDragSource: connectDragSource.dragSource(),
+    isDragging: monitor.isDragging()
+  }))(CardsContainer)
+)

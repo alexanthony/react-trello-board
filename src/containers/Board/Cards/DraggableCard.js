@@ -9,6 +9,34 @@ const getStyles = isDragging => ({
   display: isDragging ? 0.5 : 1
 })
 
+class CardComponent extends Component {
+  static propTypes = {
+    item: PropTypes.object,
+    connectDragSource: PropTypes.func.isRequired,
+    connectDragPreview: PropTypes.func.isRequired,
+    isDragging: PropTypes.bool.isRequired,
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number,
+    stopScrolling: PropTypes.func
+  }
+
+  componentDidMount() {
+    this.props.connectDragPreview(getEmptyImage(), {
+      captureDraggingState: true
+    })
+  }
+
+  render() {
+    const { isDragging, connectDragSource, item } = this.props
+
+    return connectDragSource(
+      <div>
+        <Card style={getStyles(isDragging)} item={item} />
+      </div>
+    )
+  }
+}
+
 const cardSource = {
   beginDrag: (props, monitor, component) => {
     // dispatch to redux store that drag is started
@@ -51,31 +79,6 @@ const collectDragSource = (connectDragSource, monitor) => ({
   isDragging: monitor.isDragging()
 })
 
-@DragSource('card', cardSource, collectDragSource, OPTIONS)
-export default class CardComponent extends Component {
-  static propTypes = {
-    item: PropTypes.object,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number,
-    stopScrolling: PropTypes.func
-  }
-
-  componentDidMount() {
-    this.props.connectDragPreview(getEmptyImage(), {
-      captureDraggingState: true
-    })
-  }
-
-  render() {
-    const { isDragging, connectDragSource, item } = this.props
-
-    return connectDragSource(
-      <div>
-        <Card style={getStyles(isDragging)} item={item} />
-      </div>
-    )
-  }
-}
+export default DragSource('card', cardSource, collectDragSource, OPTIONS)(
+  CardComponent
+)

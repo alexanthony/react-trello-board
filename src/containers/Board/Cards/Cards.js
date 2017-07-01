@@ -80,13 +80,7 @@ const specs = {
   }
 }
 
-@DropTarget('card', specs, (connectDragSource, monitor) => ({
-  connectDropTarget: connectDragSource.dropTarget(),
-  isOver: monitor.isOver(),
-  canDrop: monitor.canDrop(),
-  item: monitor.getItem()
-}))
-export default class Cards extends Component {
+class Cards extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired,
@@ -156,3 +150,10 @@ export default class Cards extends Component {
     )
   }
 }
+
+export default DropTarget('card', specs, (connectDragSource, monitor) => ({
+  connectDropTarget: connectDragSource.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop(),
+  item: monitor.getItem()
+}))(Cards)

@@ -9,16 +9,7 @@ import * as ListsActions from '../../actions/lists'
 import CardsContainer from './Cards/CardsContainer'
 import CustomDragLayer from './CustomDragLayer'
 
-const mapStateToProps = state => ({
-  lists: state.lists.lists
-})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(ListsActions, dispatch)
-
-@connect(mapStateToProps, mapDispatchToProps)
-@DragDropContext(HTML5Backend)
-export default class Board extends Component {
+class Board extends Component {
   static propTypes = {
     getLists: PropTypes.func.isRequired,
     moveCard: PropTypes.func.isRequired,
@@ -117,3 +108,14 @@ export default class Board extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  lists: state.lists.lists
+})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(ListsActions, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  DragDropContext(HTML5Backend)(Board)
+)
