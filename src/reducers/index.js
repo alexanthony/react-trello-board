@@ -1,14 +1,11 @@
-import { combineReducers } from 'redux';
-import {
-  routerReducer
-} from 'react-router-redux';
+import { combineReducers } from 'redux'
+import { routerReducer } from 'react-router-redux'
 
-import lists from './lists';
-
+import lists from './lists'
 
 const rootReducer = combineReducers({
   routing: routerReducer,
-  lists,
-});
+  lists
+})
 
-export default rootReducer;
+export default rootReducer

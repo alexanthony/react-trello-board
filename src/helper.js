@@ -1,14 +1,14 @@
 export function getHeaders(jsonContentType = true) {
   const headers = {
-    Accept: 'application/json',
-  };
+    Accept: 'application/json'
+  }
   if (jsonContentType) {
-    headers['Content-Type'] = 'application/json';
+    headers['Content-Type'] = 'application/json'
   } else {
-    headers['Content-Type'] = 'multipart/form-data; boundary="--"';
+    headers['Content-Type'] = 'multipart/form-data; boundary="--"'
   }
   if (window.localStorage.jwt) {
-    headers.Authorization = `JWT ${window.localStorage.jwt}`;
+    headers.Authorization = `JWT ${window.localStorage.jwt}`
   }
-  return headers;
+  return headers
 }

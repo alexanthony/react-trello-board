@@ -1,48 +1,49 @@
-import React, { Component, PropTypes } from 'react';
-import { DropTarget, DragSource } from 'react-dnd';
+import React, { Component, PropTypes } from 'react'
+import { DropTarget, DragSource } from 'react-dnd'
 
-import Cards from './Cards';
+import Cards from './Cards'
 
 const listSource = {
   beginDrag(props) {
     return {
       id: props.id,
       x: props.x
-    };
+    }
   },
   endDrag(props) {
-    props.stopScrolling();
+    props.stopScrolling()
   }
-};
+}
 
 const listTarget = {
   canDrop() {
-    return false;
+    return false
   },
   hover(props, monitor) {
     if (!props.isScrolling) {
       if (window.innerWidth - monitor.getClientOffset().x < 200) {
-        props.startScrolling('toRight');
+        props.startScrolling('toRight')
       } else if (monitor.getClientOffset().x < 200) {
-        props.startScrolling('toLeft');
+        props.startScrolling('toLeft')
       }
     } else {
-      if (window.innerWidth - monitor.getClientOffset().x > 200 &&
-          monitor.getClientOffset().x > 200
+      if (
+        window.innerWidth - monitor.getClientOffset().x > 200 &&
+        monitor.getClientOffset().x > 200
       ) {
-        props.stopScrolling();
+        props.stopScrolling()
       }
     }
-    const { id: listId } = monitor.getItem();
-    const { id: nextX } = props;
+    const { id: listId } = monitor.getItem()
+    const { id: nextX } = props
     if (listId !== nextX) {
-      props.moveList(listId, props.x);
+      props.moveList(listId, props.x)
     }
   }
-};
+}
 
 @DropTarget('list', listTarget, connectDragSource => ({
-  connectDropTarget: connectDragSource.dropTarget(),
+  connectDropTarget: connectDragSource.dropTarget()
 }))
 @DragSource('list', listSource, (connectDragSource, monitor) => ({
   connectDragSource: connectDragSource.dragSource(),
@@ -63,23 +64,34 @@ export default class CardsContainer extends Component {
   }
 
   render() {
-    const { connectDropTarget, connectDragSource, item, x, moveCard, isDragging } = this.props;
-    const opacity = isDragging ? 0.5 : 1;
+    const {
+      connectDropTarget,
+      connectDragSource,
+      item,
+      x,
+      moveCard,
+      isDragging
+    } = this.props
+    const opacity = isDragging ? 0.5 : 1
 
-    return connectDragSource(connectDropTarget(
-      <div className="desk" style={{ opacity }}>
-        <div className="desk-head">
-          <div className="desk-name">{item.name}</div>
+    return connectDragSource(
+      connectDropTarget(
+        <div className="desk" style={{ opacity }}>
+          <div className="desk-head">
+            <div className="desk-name">
+              {item.name}
+            </div>
+          </div>
+          <Cards
+            moveCard={moveCard}
+            x={x}
+            cards={item.cards}
+            startScrolling={this.props.startScrolling}
+            stopScrolling={this.props.stopScrolling}
+            isScrolling={this.props.isScrolling}
+          />
         </div>
-        <Cards
-          moveCard={moveCard}
-          x={x}
-          cards={item.cards}
-          startScrolling={this.props.startScrolling}
-          stopScrolling={this.props.stopScrolling}
-          isScrolling={this.props.isScrolling}
-        />
-      </div>
-    ));
+      )
+    )
   }
 }

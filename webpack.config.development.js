@@ -1,6 +1,6 @@
 /* eslint-disable global-require, react/jsx-first-prop-new-line */
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -23,20 +23,22 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel'],
-      exclude: /node_modules/,
-      include: path.join(__dirname, 'src')
-    },
-    {
-      test: /\.styl$/,
-      loader: 'style-loader!css-loader!stylus-loader'
-    },
-    {
-      test: /\.(jpg|jpeg|gif|png|ico|ttf|otf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
-      loader: 'file-loader?name=[path][name].[ext]'
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['babel'],
+        exclude: /node_modules/,
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test: /\.styl$/,
+        loader: 'style-loader!css-loader!stylus-loader'
+      },
+      {
+        test: /\.(jpg|jpeg|gif|png|ico|ttf|otf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
+        loader: 'file-loader?name=[path][name].[ext]'
+      }
+    ]
   },
   stylus: {
     use: [require('nib')()],
@@ -47,5 +49,5 @@ module.exports = {
     tls: 'empty',
     dns: 'empty'
   }
-};
+}
 /* eslint-enable global-require, react/jsx-first-prop-new-line */
