@@ -8,6 +8,7 @@ import * as ListsActions from '../../actions/lists'
 
 import CardsContainer from './Cards/CardsContainer'
 import CustomDragLayer from './CustomDragLayer'
+import CardModal from '../EditCard/CardModal'
 
 class Board extends Component {
   static propTypes = {
@@ -90,6 +91,7 @@ class Board extends Component {
 
     return (
       <div style={{ height: '100%' }}>
+        <CardModal />
         <CustomDragLayer snapToGrid={false} />
         {lists.map((item, i) =>
           <CardsContainer
