@@ -69,13 +69,13 @@ a.add-card
 	height 100%
 	padding-bottom 15px
 	.placeholder, .placeholder:hover
-		height 161px
+		height 51px
 		background-color rgba(208,208,208,1)
 .item
 	width 90%
 	margin 0 auto 10px
 	background #fff
-	min-height 100px
+	min-height 40px
 	border-radius 5px
 	box-shadow 1px 1px 1px rgba(0,0,0,.3)
 	transition 0.15s
@@ -83,53 +83,11 @@ a.add-card
 	&:hover
 		background #f7f7f7
 	.item-name
-		padding 5px 10px
-		border-bottom 1px solid #dbdbdb
 		white-space normal
-		word-break break-all
+		word-break keep-all
 		word-wrap break-world
 	.item-container
 		padding 10px
-		border-bottom 1px solid #dbdbdb
 		clearfix()
-		.item-avatar-wrap
-			width 70px
-			float left
-			margin-bottom 5px
-			img
-				width 50px
-				height 50px
-				display block
-				margin 0 auto
-				border-radius 50%
-				border 1px solid #dbdbdb
 		.item-content
 			white-space normal
-			.item-author
-				font-size 16px
-				font-weight bolder
-			p
-				margin 5px 0
-	.item-perfomers
-		clearfix()
-		padding 5px 10px
-		.add-perfomers
-			float left
-		.delete-perfomers
-			float right
-		.add-perfomers,
-		.delete-perfomers
-			a
-				display block
-				float left
-				margin-right 3px
-				img
-					width 15px
-					height 15px
-			.perfomer
-				float left
-				img
-					display block
-					width 15px
-					height 15px
-					border-radius 50%
