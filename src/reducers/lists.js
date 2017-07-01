@@ -5,7 +5,8 @@ import {
   GET_LISTS_START,
   MOVE_CARD,
   MOVE_LIST,
-  TOGGLE_DRAGGING
+  TOGGLE_DRAGGING,
+  ADD_CARD
 } from '../actions/lists'
 
 /* eslint-disable new-cap */
@@ -57,6 +58,30 @@ const lists = (state = initialState, action) => {
     }
     case TOGGLE_DRAGGING: {
       return state.set('isDragging', action.isDragging)
+    }
+    case ADD_CARD: {
+      const newLists = [...state.lists]
+      // console.log(JSON.stringify(newLists))
+      // console.log(JSON.stringify(newLists[action.listId].cards))
+      newLists[action.listId] = {
+        ...newLists[action.listId],
+        cards: [
+          ...newLists[action.listId].cards,
+          {
+            id: action.id,
+            firstName: 'New',
+            lastName: 'Card',
+            title: action.title
+          }
+        ]
+      }
+      // newLists[action.listId].cards = .push()
+      // console.log(JSON.stringify(newLists))
+      // console.log(JSON.stringify(newLists[action.listId].cards))
+      return state.set('lists', newLists)
+      // return state.withMutations(ctx => {
+      //   ctx.set('lists', newLists)
+      // })
     }
     default:
       return state

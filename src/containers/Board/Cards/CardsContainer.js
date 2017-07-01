@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { DropTarget, DragSource } from 'react-dnd'
+import { connect } from 'react-redux'
+import { addCard } from '../../../actions/lists'
 
 import Cards from './Cards'
 
@@ -14,7 +16,17 @@ class CardsContainer extends Component {
     isDragging: PropTypes.bool,
     startScrolling: PropTypes.func,
     stopScrolling: PropTypes.func,
-    isScrolling: PropTypes.bool
+    isScrolling: PropTypes.bool,
+    addCard: PropTypes.func
+  }
+
+  constructor(props) {
+    super(props)
+    this.onAddClicked = this.onAddClicked.bind(this)
+  }
+
+  onAddClicked() {
+    this.props.addCard(this.props.x)
   }
 
   render() {
@@ -30,20 +42,25 @@ class CardsContainer extends Component {
 
     return connectDragSource(
       connectDropTarget(
-        <div className="desk" style={{ opacity }}>
-          <div className="desk-head">
-            <div className="desk-name">
-              {item.name}
+        <div className="desk-container">
+          <div className="desk" style={{ opacity }}>
+            <div className="desk-head">
+              <div className="desk-name">
+                {item.name}
+              </div>
             </div>
+            <Cards
+              moveCard={moveCard}
+              x={x}
+              cards={item.cards}
+              startScrolling={this.props.startScrolling}
+              stopScrolling={this.props.stopScrolling}
+              isScrolling={this.props.isScrolling}
+            />
+            <a className="add-card" href="#" onClick={this.onAddClicked}>
+              Add a card...
+            </a>
           </div>
-          <Cards
-            moveCard={moveCard}
-            x={x}
-            cards={item.cards}
-            startScrolling={this.props.startScrolling}
-            stopScrolling={this.props.stopScrolling}
-            isScrolling={this.props.isScrolling}
-          />
         </div>
       )
     )
@@ -89,11 +106,15 @@ const listTarget = {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  addCard: listId => dispatch(addCard(listId, ''))
+})
+
 export default DropTarget('list', listTarget, connectDragSource => ({
   connectDropTarget: connectDragSource.dropTarget()
 }))(
   DragSource('list', listSource, (connectDragSource, monitor) => ({
     connectDragSource: connectDragSource.dragSource(),
     isDragging: monitor.isDragging()
-  }))(CardsContainer)
+  }))(connect(null, mapDispatchToProps)(CardsContainer))
 )

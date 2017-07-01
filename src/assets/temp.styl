@@ -25,22 +25,27 @@ img
 	max-width 100%
 
 main
-	padding 50px 10px
+	padding 20px 10px
 	overflow-x auto
 	overflow-y hidden
 	height 100%
 	white-space nowrap
 	clearfix()
+.desk-container
+	height 100%
+	display inline-block
+	width 270px
+	margin-right 20px
 .desk, .desk-placeholder, .desk-placeholder:hover
 	width 270px
-	display inline-block
-	height 100%
+	display flex
+	flex-direction column
 	overflow hidden
+	max-height 100%
 	min-height 100px
 	background-color #e2e4e6
 	box-shadow 1px 1px 1px rgba(0,0,0,.5)
 	border-radius 3px
-	padding-bottom 20px
 	margin-right 20px
 	vertical-align top
 	.desk-head
@@ -52,10 +57,17 @@ main
 			font-weight bold
 			white-space normal
 			width 100%
+a.add-card
+	color #acacac
+	padding 8px 10px
+	&:hover
+		color #4d4d4d
+		background-color #cdd2d4
+		text-decoration underline
 .desk-items
 	overflow-y auto
 	height 100%
-	padding-bottom 20px
+	padding-bottom 15px
 	.placeholder, .placeholder:hover
 		height 161px
 		background-color rgba(208,208,208,1)
