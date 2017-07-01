@@ -9,15 +9,12 @@ import * as ListsActions from '../../actions/lists'
 import CardsContainer from './Cards/CardsContainer'
 import CustomDragLayer from './CustomDragLayer'
 
-function mapStateToProps(state) {
-  return {
-    lists: state.lists.lists
-  }
-}
+const mapStateToProps = state => ({
+  lists: state.lists.lists
+})
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ListsActions, dispatch)
-}
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(ListsActions, dispatch)
 
 @connect(mapStateToProps, mapDispatchToProps)
 @DragDropContext(HTML5Backend)

@@ -1,4 +1,4 @@
-export function getHeaders(jsonContentType = true) {
+export const getHeaders = (jsonContentType = true) => {
   const headers = {
     Accept: 'application/json'
   }

@@ -5,7 +5,7 @@ import { findDOMNode } from 'react-dom'
 import Card from './DraggableCard'
 import { CARD_HEIGHT, CARD_MARGIN, OFFSET_HEIGHT } from '../../../constants.js'
 
-function getPlaceholderIndex(y, scrollY) {
+const getPlaceholderIndex = (y, scrollY) => {
   // shift placeholder if y position more than card height / 2
   const yPos = y - OFFSET_HEIGHT + scrollY
   let placeholderIndex

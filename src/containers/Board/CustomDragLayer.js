@@ -10,7 +10,7 @@ const layerStyles = {
   zIndex: 100000
 }
 
-function getItemStyles(props) {
+const getItemStyles = props => {
   const { initialOffset, currentOffset } = props
   if (!initialOffset || !currentOffset) {
     return {

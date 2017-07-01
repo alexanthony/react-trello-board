@@ -17,7 +17,7 @@ const InitialState = Record({
 /* eslint-enable new-cap */
 const initialState = new InitialState()
 
-export default function lists(state = initialState, action) {
+const lists = (state = initialState, action) => {
   switch (action.type) {
     case GET_LISTS_START:
       return state.set('isFetching', true)
@@ -62,3 +62,5 @@ export default function lists(state = initialState, action) {
       return state
   }
 }
+
+export default lists

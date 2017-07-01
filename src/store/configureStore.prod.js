@@ -8,7 +8,7 @@ import rootReducer from '../reducers'
 const reduxRouterMiddleware = routerMiddleware(browserHistory)
 const middleware = [reduxRouterMiddleware, thunk].filter(Boolean)
 
-function configureStore(initialState) {
+const configureStore = initialState => {
   const store = createStore(
     rootReducer,
     initialState,
