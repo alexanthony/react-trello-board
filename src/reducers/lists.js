@@ -6,7 +6,8 @@ import {
   MOVE_CARD,
   MOVE_LIST,
   TOGGLE_DRAGGING,
-  ADD_CARD
+  ADD_CARD,
+  SET_CARD_TITLE
 } from '../actions/lists'
 
 /* eslint-disable new-cap */
@@ -82,6 +83,35 @@ const lists = (state = initialState, action) => {
       // return state.withMutations(ctx => {
       //   ctx.set('lists', newLists)
       // })
+    }
+    case SET_CARD_TITLE: {
+      const newLists = [...state.lists]
+      const thisList = newLists.find(list => list.id === action.listId)
+      const updatedList = { ...thisList, cards: [...thisList.cards] }
+      const thisCardPos = updatedList.cards.findIndex(
+        card => card.id === action.cardId
+      )
+      updatedList.cards[thisCardPos] = {
+        ...updatedList.cards[thisCardPos],
+        title: action.newTitle
+      }
+      newLists[action.listId] = updatedList
+      const newState = state.set('lists', newLists)
+
+      return newState
+
+      // newLists[action.listId] = {
+      //   ...newLists[action.listId],
+      //   cards: [
+      //     ...newLists[action.listId].cards,
+      //     {
+      //       id: action.id,
+      //       firstName: 'New',
+      //       lastName: 'Card',
+      //       title: action.title
+      //     }
+      //   ]
+      // }
     }
     default:
       return state

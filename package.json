@@ -23,7 +23,9 @@
     "react-redux": "4.4.5",
     "react-router": "2.5.2",
     "react-router-redux": "4.0.5",
-    "redux": "3.5.2"
+    "redux": "3.5.2",
+    "reselect": "^3.0.1",
+    "riek": "^1.1.0"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",

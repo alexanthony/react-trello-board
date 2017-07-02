@@ -7,6 +7,7 @@ export const MOVE_CARD = 'MOVE_CARD'
 export const MOVE_LIST = 'MOVE_LIST'
 export const TOGGLE_DRAGGING = 'TOGGLE_DRAGGING'
 export const ADD_CARD = 'ADD_CARD'
+export const SET_CARD_TITLE = 'SET_CARD_TITLE'
 
 export const getLists = quantity => dispatch => {
   dispatch({ type: GET_LISTS_START, quantity })
@@ -51,4 +52,11 @@ export const addCard = (listId, title) => ({
   title,
   listId,
   id: uniqueId()
+})
+
+export const setCardTitle = (cardId, newTitle, listId) => ({
+  type: SET_CARD_TITLE,
+  cardId,
+  newTitle,
+  listId
 })
