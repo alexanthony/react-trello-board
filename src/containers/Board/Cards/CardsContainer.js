@@ -117,7 +117,7 @@ const listTarget = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addCard: listId => dispatch(addCard(listId, '')),
+  addCard: listId => dispatch(addCard(listId, 'New Card')),
   setListName: (listId, newName) => dispatch(setListName(listId, newName))
 })
 
