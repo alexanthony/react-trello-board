@@ -31,10 +31,6 @@ class Board extends Component {
     this.state = { isScrolling: false }
   }
 
-  componentWillMount() {
-    this.props.getLists(10)
-  }
-
   startScrolling(direction) {
     // if (!this.state.isScrolling) {
     switch (direction) {

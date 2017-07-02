@@ -1,8 +1,6 @@
 import { Record } from 'immutable'
 
 import {
-  GET_LISTS,
-  GET_LISTS_START,
   MOVE_CARD,
   MOVE_LIST,
   TOGGLE_DRAGGING,
@@ -23,12 +21,6 @@ const initialState = new InitialState()
 
 const lists = (state = initialState, action) => {
   switch (action.type) {
-    case GET_LISTS_START:
-      return state.set('isFetching', true)
-    case GET_LISTS:
-      return state.withMutations(ctx => {
-        ctx.set('isFetching', false).set('lists', action.lists)
-      })
     case MOVE_CARD: {
       const newLists = [...state.lists]
       const { lastX, lastY, nextX, nextY } = action
