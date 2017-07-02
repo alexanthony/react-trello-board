@@ -7,7 +7,8 @@ import {
   MOVE_LIST,
   TOGGLE_DRAGGING,
   ADD_CARD,
-  SET_CARD_TITLE
+  SET_CARD_TITLE,
+  SET_LIST_NAME
 } from '../actions/lists'
 
 /* eslint-disable new-cap */
@@ -112,6 +113,15 @@ const lists = (state = initialState, action) => {
       //     }
       //   ]
       // }
+    }
+    case SET_LIST_NAME: {
+      const newLists = [...state.lists]
+      const thisListPos = newLists.findIndex(list => list.id === action.listId)
+      newLists[thisListPos] = {
+        ...newLists[thisListPos],
+        name: action.newName
+      }
+      return state.set('lists', newLists)
     }
     default:
       return state

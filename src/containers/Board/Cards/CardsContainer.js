@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { DropTarget, DragSource } from 'react-dnd'
 import { connect } from 'react-redux'
-import { addCard } from '../../../actions/lists'
+import { RIEInput } from 'riek'
 
+import { addCard, setListName } from '../../../actions/lists'
 import Cards from './Cards'
 
 class CardsContainer extends Component {
@@ -23,10 +24,15 @@ class CardsContainer extends Component {
   constructor(props) {
     super(props)
     this.onAddClicked = this.onAddClicked.bind(this)
+    this.onListTitleChange = this.onListTitleChange.bind(this)
   }
 
   onAddClicked() {
     this.props.addCard(this.props.x)
+  }
+
+  onListTitleChange(update) {
+    this.props.setListName(this.props.item.id, update.name)
   }
 
   render() {
@@ -46,7 +52,11 @@ class CardsContainer extends Component {
           <div className="desk" style={{ opacity }}>
             <div className="desk-head">
               <div className="desk-name">
-                {item.name}
+                <RIEInput
+                  propName="name"
+                  value={item.name}
+                  change={this.onListTitleChange}
+                />
               </div>
             </div>
             <Cards
@@ -107,7 +117,8 @@ const listTarget = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addCard: listId => dispatch(addCard(listId, ''))
+  addCard: listId => dispatch(addCard(listId, '')),
+  setListName: (listId, newName) => dispatch(setListName(listId, newName))
 })
 
 export default DropTarget('list', listTarget, connectDragSource => ({
