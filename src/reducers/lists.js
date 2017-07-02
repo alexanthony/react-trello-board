@@ -1,4 +1,5 @@
 import { Record } from 'immutable'
+import { REHYDRATE } from 'redux-persist/constants'
 
 import {
   MOVE_CARD,
@@ -20,6 +21,7 @@ const InitialState = Record({
 const initialState = new InitialState()
 
 const lists = (state = initialState, action) => {
+  let incoming
   switch (action.type) {
     case MOVE_CARD: {
       const newLists = [...state.lists]
@@ -125,6 +127,10 @@ const lists = (state = initialState, action) => {
       })
       return state.set('lists', newLists)
     }
+    case REHYDRATE:
+      incoming = action.payload.lists
+      if (incoming) return { ...state, ...incoming }
+      return state
     default:
       return state
   }
