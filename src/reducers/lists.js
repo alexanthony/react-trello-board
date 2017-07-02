@@ -1,4 +1,3 @@
-import { Record } from 'immutable'
 import { REHYDRATE } from 'redux-persist/constants'
 
 import {
@@ -6,19 +5,18 @@ import {
   MOVE_LIST,
   TOGGLE_DRAGGING,
   ADD_CARD,
-  SET_CARD_TITLE,
   SET_LIST_NAME,
   ADD_LIST
 } from '../actions/lists'
 
 /* eslint-disable new-cap */
-const InitialState = Record({
+const initialState = {
   isFetching: false,
   lists: [],
   isDragging: false
-})
+}
+// const initialState = new InitialState()
 /* eslint-enable new-cap */
-const initialState = new InitialState()
 
 const lists = (state = initialState, action) => {
   let incoming
@@ -38,9 +36,7 @@ const lists = (state = initialState, action) => {
         // delete element from old place
         newLists[lastX].cards.splice(lastY, 1)
       }
-      return state.withMutations(ctx => {
-        ctx.set('lists', newLists)
-      })
+      return { ...state, lists: newLists }
     }
     case MOVE_LIST: {
       const newLists = [...state.lists]
@@ -49,65 +45,19 @@ const lists = (state = initialState, action) => {
 
       newLists.splice(nextX, 0, t)
 
-      return state.withMutations(ctx => {
-        ctx.set('lists', newLists)
-      })
+      return { ...state, lists: newLists }
     }
     case TOGGLE_DRAGGING: {
-      return state.set('isDragging', action.isDragging)
+      return { ...state, isDragging: action.isDragging }
     }
     case ADD_CARD: {
       const newLists = [...state.lists]
-      // console.log(JSON.stringify(newLists))
-      // console.log(JSON.stringify(newLists[action.listId].cards))
       newLists[action.listId] = {
         ...newLists[action.listId],
-        cards: [
-          ...newLists[action.listId].cards,
-          {
-            id: action.id,
-            firstName: 'New',
-            lastName: 'Card',
-            title: action.title
-          }
-        ]
+        cards: [...newLists[action.listId].cards, action.id]
       }
-      // newLists[action.listId].cards = .push()
-      // console.log(JSON.stringify(newLists))
-      // console.log(JSON.stringify(newLists[action.listId].cards))
-      return state.set('lists', newLists)
-      // return state.withMutations(ctx => {
-      //   ctx.set('lists', newLists)
-      // })
-    }
-    case SET_CARD_TITLE: {
-      const newLists = [...state.lists]
-      const thisList = newLists.find(list => list.id === action.listId)
-      const updatedList = { ...thisList, cards: [...thisList.cards] }
-      const thisCardPos = updatedList.cards.findIndex(
-        card => card.id === action.cardId
-      )
-      updatedList.cards[thisCardPos] = {
-        ...updatedList.cards[thisCardPos],
-        title: action.newTitle
-      }
-      newLists[action.listId] = updatedList
-      const newState = state.set('lists', newLists)
 
-      return newState
-
-      // newLists[action.listId] = {
-      //   ...newLists[action.listId],
-      //   cards: [
-      //     ...newLists[action.listId].cards,
-      //     {
-      //       id: action.id,
-      //       firstName: 'New',
-      //       lastName: 'Card',
-      //       title: action.title
-      //     }
-      //   ]
-      // }
+      return { ...state, lists: newLists }
     }
     case SET_LIST_NAME: {
       const newLists = [...state.lists]
@@ -116,7 +66,8 @@ const lists = (state = initialState, action) => {
         ...newLists[thisListPos],
         name: action.newName
       }
-      return state.set('lists', newLists)
+
+      return { ...state, lists: newLists }
     }
     case ADD_LIST: {
       const newLists = [...state.lists]
@@ -125,7 +76,8 @@ const lists = (state = initialState, action) => {
         cards: [],
         id: newLists.length
       })
-      return state.set('lists', newLists)
+
+      return { ...state, lists: newLists }
     }
     case REHYDRATE:
       incoming = action.payload.lists

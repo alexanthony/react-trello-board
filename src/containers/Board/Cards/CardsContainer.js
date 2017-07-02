@@ -5,6 +5,7 @@ import { RIEInput } from 'riek'
 
 import { addCard, setListName } from '../../../actions/lists'
 import Cards from './Cards'
+import { cardsByListSelector } from '../../../reducers'
 
 class CardsContainer extends Component {
   static propTypes = {
@@ -19,7 +20,8 @@ class CardsContainer extends Component {
     stopScrolling: PropTypes.func,
     isScrolling: PropTypes.bool,
     addCard: PropTypes.func,
-    setListName: PropTypes.func
+    setListName: PropTypes.func,
+    cards: PropTypes.array
   }
 
   constructor(props) {
@@ -43,7 +45,8 @@ class CardsContainer extends Component {
       item,
       x,
       moveCard,
-      isDragging
+      isDragging,
+      cards
     } = this.props
     const opacity = isDragging ? 0.5 : 1
 
@@ -63,7 +66,7 @@ class CardsContainer extends Component {
             <Cards
               moveCard={moveCard}
               x={x}
-              cards={item.cards}
+              cards={cards}
               startScrolling={this.props.startScrolling}
               stopScrolling={this.props.stopScrolling}
               isScrolling={this.props.isScrolling}
@@ -117,6 +120,10 @@ const listTarget = {
   }
 }
 
+const mapStateToProps = (state, ownProps) => ({
+  cards: cardsByListSelector(state)[ownProps.item.id]
+})
+
 const mapDispatchToProps = dispatch => ({
   addCard: listId => dispatch(addCard(listId, 'New Card')),
   setListName: (listId, newName) => dispatch(setListName(listId, newName))
@@ -128,5 +135,5 @@ export default DropTarget('list', listTarget, connectDragSource => ({
   DragSource('list', listSource, (connectDragSource, monitor) => ({
     connectDragSource: connectDragSource.dragSource(),
     isDragging: monitor.isDragging()
-  }))(connect(null, mapDispatchToProps)(CardsContainer))
+  }))(connect(mapStateToProps, mapDispatchToProps)(CardsContainer))
 )
