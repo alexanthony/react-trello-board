@@ -30,7 +30,15 @@ const EditModal = ({ showModal, onHideModal, card, onTitleChange, list }) =>
 
 EditModal.propTypes = {
   showModal: PropTypes.bool,
-  onHideModal: PropTypes.func
+  onHideModal: PropTypes.func,
+  card: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string
+  }),
+  onTitleChange: PropTypes.func,
+  list: PropTypes.shape({
+    id: PropTypes.string
+  })
 }
 
 const mapStateToProps = state => ({

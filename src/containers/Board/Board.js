@@ -15,7 +15,8 @@ class Board extends Component {
   static propTypes = {
     moveCard: PropTypes.func.isRequired,
     moveList: PropTypes.func.isRequired,
-    lists: PropTypes.array.isRequired
+    lists: PropTypes.array.isRequired,
+    addList: PropTypes.func.isRequired
   }
 
   constructor(props) {

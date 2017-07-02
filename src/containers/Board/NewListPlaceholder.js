@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 
 const NewListPlaceholder = ({ onAddList }) =>
   <div className="desk-container new-list-placeholder-container">
@@ -10,5 +10,9 @@ const NewListPlaceholder = ({ onAddList }) =>
       </div>
     </div>
   </div>
+
+NewListPlaceholder.propTypes = {
+  onAddList: PropTypes.func.isRequired
+}
 
 export default NewListPlaceholder

@@ -18,7 +18,8 @@ class CardsContainer extends Component {
     startScrolling: PropTypes.func,
     stopScrolling: PropTypes.func,
     isScrolling: PropTypes.bool,
-    addCard: PropTypes.func
+    addCard: PropTypes.func,
+    setListName: PropTypes.func
   }
 
   constructor(props) {
