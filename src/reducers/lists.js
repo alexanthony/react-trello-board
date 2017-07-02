@@ -8,7 +8,8 @@ import {
   TOGGLE_DRAGGING,
   ADD_CARD,
   SET_CARD_TITLE,
-  SET_LIST_NAME
+  SET_LIST_NAME,
+  ADD_LIST
 } from '../actions/lists'
 
 /* eslint-disable new-cap */
@@ -121,6 +122,15 @@ const lists = (state = initialState, action) => {
         ...newLists[thisListPos],
         name: action.newName
       }
+      return state.set('lists', newLists)
+    }
+    case ADD_LIST: {
+      const newLists = [...state.lists]
+      newLists.push({
+        name: 'New List',
+        cards: [],
+        id: newLists.length
+      })
       return state.set('lists', newLists)
     }
     default:

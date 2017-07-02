@@ -9,6 +9,7 @@ import * as ListsActions from '../../actions/lists'
 import CardsContainer from './Cards/CardsContainer'
 import CustomDragLayer from './CustomDragLayer'
 import CardModal from '../EditCard/CardModal'
+import NewListPlaceholder from './NewListPlaceholder'
 
 class Board extends Component {
   static propTypes = {
@@ -106,6 +107,7 @@ class Board extends Component {
             x={i}
           />
         )}
+        <NewListPlaceholder onAddList={this.props.addList} />
       </div>
     )
   }
