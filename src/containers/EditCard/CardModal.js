@@ -31,6 +31,7 @@ const CardModal = ({
       propName="title"
       value={card.title}
       change={update => onTitleChange(card.id, update.title, list.id)}
+      classEditing="card-title-editing"
     />
   </Modal>
 
