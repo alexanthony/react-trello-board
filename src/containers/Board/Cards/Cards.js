@@ -123,7 +123,7 @@ class Cards extends Component {
             x={x}
             y={i}
             item={item}
-            key={item.id}
+            key={`${item.id}_${item.title}`} // HACK - forces update when title changes
             stopScrolling={this.props.stopScrolling}
           />
         )
