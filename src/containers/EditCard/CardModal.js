@@ -19,7 +19,13 @@ const modalStyle = {
   }
 }
 
-const EditModal = ({ showModal, onHideModal, card, onTitleChange, list }) =>
+const CardModal = ({
+  showModal,
+  onHideModal,
+  card = { title: '' },
+  onTitleChange,
+  list
+}) =>
   <Modal isOpen={showModal} onRequestClose={onHideModal} style={modalStyle}>
     <RIEInput
       propName="title"
@@ -28,7 +34,7 @@ const EditModal = ({ showModal, onHideModal, card, onTitleChange, list }) =>
     />
   </Modal>
 
-EditModal.propTypes = {
+CardModal.propTypes = {
   showModal: PropTypes.bool,
   onHideModal: PropTypes.func,
   card: PropTypes.shape({
@@ -53,4 +59,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setCardTitle(cardId, newTitle, listId))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditModal)
+export default connect(mapStateToProps, mapDispatchToProps)(CardModal)
