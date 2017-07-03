@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { EditActions } from '../../../reducers/edit'
+import { EditActions } from '../../../redux/edit'
 
 const propTypes = {
   item: PropTypes.object.isRequired,

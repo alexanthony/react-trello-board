@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router'
 import { persistStore, autoRehydrate } from 'redux-persist'
 import logger from 'redux-logger'
 
-import rootReducer from '../reducers'
+import rootReducer from '../redux'
 
 const reduxRouterMiddleware = routerMiddleware(browserHistory)
 const middleware = [reduxRouterMiddleware, thunk, logger].filter(Boolean)
@@ -25,9 +25,9 @@ const configureStore = initialState => {
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => {
+    module.hot.accept('../redux', () => {
       /* eslint-disable global-require */
-      const nextReducer = require('../reducers').default
+      const nextReducer = require('../redux').default
       /* eslint-enable global-require */
       store.replaceReducer(nextReducer)
     })

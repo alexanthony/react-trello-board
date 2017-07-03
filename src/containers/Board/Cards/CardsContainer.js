@@ -5,7 +5,7 @@ import { RIEInput } from 'riek'
 
 import { addCard, setListName } from '../../../actions/lists'
 import Cards from './Cards'
-import { cardsByListSelector } from '../../../reducers'
+import { cardsByListSelector } from '../../../redux'
 
 class CardsContainer extends Component {
   static propTypes = {

@@ -3,8 +3,8 @@ import Modal from 'react-modal'
 import { connect } from 'react-redux'
 import { RIEInput } from 'riek'
 
-import { EditActions } from '../../reducers/edit'
-import { selectedCardSelector, selectedCardListSelector } from '../../reducers'
+import { EditActions } from '../../redux/edit'
+import { selectedCardSelector, selectedCardListSelector } from '../../redux'
 import { setCardTitle } from '../../actions/lists'
 
 const modalStyle = {

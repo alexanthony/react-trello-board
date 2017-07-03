@@ -4,7 +4,7 @@ import { routerMiddleware } from 'react-router-redux'
 import { browserHistory } from 'react-router'
 import { persistStore, autoRehydrate } from 'redux-persist'
 
-import rootReducer from '../reducers'
+import rootReducer from '../redux'
 
 const reduxRouterMiddleware = routerMiddleware(browserHistory)
 const middleware = [reduxRouterMiddleware, thunk].filter(Boolean)
