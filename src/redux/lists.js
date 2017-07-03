@@ -20,6 +20,8 @@ export const actionTypes = {
   ADD_LIST: 'ADD_LIST'
 }
 
+const isBlank = aString => !aString || aString.trim().length === 0
+
 const actionCreators = {
   moveList: (lastX, nextX) => ({ type: actionTypes.MOVE_LIST, lastX, nextX }),
   moveCard: (lastX, lastY, nextX, nextY) => ({
@@ -43,13 +45,13 @@ const actionCreators = {
   setCardTitle: (cardId, newTitle) => ({
     type: actionTypes.SET_CARD_TITLE,
     cardId,
-    newTitle
+    newTitle: isBlank(newTitle) ? 'Card' : newTitle
   }),
 
   setListName: (listId, newName) => ({
     type: actionTypes.SET_LIST_NAME,
     listId,
-    newName
+    newName: isBlank(newName) ? 'List' : newName
   }),
 
   addList: () => ({
