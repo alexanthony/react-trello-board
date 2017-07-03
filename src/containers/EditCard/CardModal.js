@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
-import { RIEInput } from 'riek'
+import { RIEInput, RIETextArea } from 'riek'
 
 import { EditActions } from '../../redux/edit'
 import { selectedCardSelector, selectedCardListSelector } from '../../redux'
@@ -24,6 +24,7 @@ const CardModal = ({
   onHideModal,
   card = { title: '' },
   onTitleChange,
+  onDescriptionChange,
   list
 }) =>
   <Modal isOpen={showModal} onRequestClose={onHideModal} style={modalStyle}>
@@ -39,6 +40,14 @@ const CardModal = ({
         from list {list.name}
       </span>
     </div>
+    <RIETextArea
+      propName="description"
+      value={card.description}
+      change={update => onDescriptionChange(card.id, update.description)}
+      className="card-description"
+      classEditing="card-description-editing"
+      rows={10}
+    />
   </Modal>
 
 CardModal.propTypes = {
@@ -49,6 +58,7 @@ CardModal.propTypes = {
     title: PropTypes.string
   }),
   onTitleChange: PropTypes.func,
+  onDescriptionChange: PropTypes.func,
   list: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string
@@ -63,8 +73,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onHideModal: () => dispatch(EditActions.dismissEditCard()),
-  onTitleChange: (cardId, newTitle, listId) =>
-    dispatch(CardActions.setCardTitle(cardId, newTitle, listId))
+  onTitleChange: (cardId, newTitle) =>
+    dispatch(CardActions.setCardTitle(cardId, newTitle)),
+  onDescriptionChange: (cardId, newDescription) =>
+    dispatch(CardActions.setCardDescription(cardId, newDescription))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardModal)
