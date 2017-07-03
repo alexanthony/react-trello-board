@@ -52,9 +52,6 @@ export const selectedCardListSelector = createSelector(
   selectedCardIdSelector,
   listsSelector,
   (selectedCardId, cardLists) => {
-    console.log('selectedCardListSelector')
-    console.log(selectedCardId)
-    console.log(cardLists)
     if (!selectedCardId) {
       return {}
     }

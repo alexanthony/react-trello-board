@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
-import * as ListsActions from '../../actions/lists'
+import { ListActions } from '../../redux/lists'
 
 import CardsContainer from './Cards/CardsContainer'
 import CustomDragLayer from './CustomDragLayer'
@@ -113,8 +112,13 @@ const mapStateToProps = state => ({
   lists: state.lists.lists
 })
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(ListsActions, dispatch)
+const mapDispatchToProps = dispatch => ({
+  moveCard: (lastX, lastY, nextX, nextY) =>
+    dispatch(ListActions.moveCard(lastX, lastY, nextX, nextY)),
+  moveList: (lastX, nextX) => dispatch(ListActions.moveList(lastX, nextX)),
+  addList: () => dispatch(ListActions.addList())
+})
+// bindActionCreators(ListsActions, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(
   DragDropContext(HTML5Backend)(Board)

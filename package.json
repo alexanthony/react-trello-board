@@ -26,7 +26,8 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^4.8.2",
     "reselect": "^3.0.1",
-    "riek": "^1.1.0"
+    "riek": "^1.1.0",
+    "shortid": "^2.2.8"
   },
   "devDependencies": {
     "babel-cli": "6.10.1",

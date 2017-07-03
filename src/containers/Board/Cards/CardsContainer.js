@@ -3,7 +3,7 @@ import { DropTarget, DragSource } from 'react-dnd'
 import { connect } from 'react-redux'
 import { RIEInput } from 'riek'
 
-import { addCard, setListName } from '../../../actions/lists'
+import { ListActions } from '../../../redux/lists'
 import Cards from './Cards'
 import { cardsByListSelector } from '../../../redux'
 
@@ -127,8 +127,9 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  addCard: listId => dispatch(addCard(listId, 'New Card')),
-  setListName: (listId, newName) => dispatch(setListName(listId, newName))
+  addCard: listId => dispatch(ListActions.addCard(listId, 'New Card')),
+  setListName: (listId, newName) =>
+    dispatch(ListActions.setListName(listId, newName))
 })
 
 export default DropTarget('list', listTarget, connectDragSource => ({
