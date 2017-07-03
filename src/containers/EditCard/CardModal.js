@@ -30,9 +30,15 @@ const CardModal = ({
     <RIEInput
       propName="title"
       value={card.title}
-      change={update => onTitleChange(card.id, update.title, list.id)}
+      change={update => onTitleChange(card.id, update.title)}
+      className="card-title"
       classEditing="card-title-editing"
     />
+    <div className="card-list-name">
+      <span>
+        from list {list.name}
+      </span>
+    </div>
   </Modal>
 
 CardModal.propTypes = {
@@ -44,7 +50,8 @@ CardModal.propTypes = {
   }),
   onTitleChange: PropTypes.func,
   list: PropTypes.shape({
-    id: PropTypes.string
+    id: PropTypes.number,
+    name: PropTypes.string
   })
 }
 

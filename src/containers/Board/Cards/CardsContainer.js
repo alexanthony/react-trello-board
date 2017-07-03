@@ -60,6 +60,7 @@ class CardsContainer extends Component {
                   propName="name"
                   value={item.name}
                   change={this.onListTitleChange}
+                  className="desk-name-base"
                   classEditing="desk-name-editing"
                 />
               </div>

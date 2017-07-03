@@ -52,11 +52,14 @@ export const selectedCardListSelector = createSelector(
   selectedCardIdSelector,
   listsSelector,
   (selectedCardId, cardLists) => {
+    console.log('selectedCardListSelector')
+    console.log(selectedCardId)
+    console.log(cardLists)
     if (!selectedCardId) {
       return {}
     }
     for (let i = 0; i < cardLists.length; i++) {
-      const card = cardLists[i].cards.find(a => a.id === selectedCardId)
+      const card = cardLists[i].cards.find(cardId => cardId === selectedCardId)
       if (card) {
         return cardLists[i]
       }

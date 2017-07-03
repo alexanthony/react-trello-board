@@ -27,11 +27,10 @@ export const addCard = (listId, title) => ({
   id: uniqueId()
 })
 
-export const setCardTitle = (cardId, newTitle, listId) => ({
+export const setCardTitle = (cardId, newTitle) => ({
   type: SET_CARD_TITLE,
   cardId,
-  newTitle,
-  listId
+  newTitle
 })
 
 export const setListName = (listId, newName) => ({
