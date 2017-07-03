@@ -22,7 +22,7 @@ export const reducer = (state = {}, action) => {
       return { ...state, [action.cardId]: card(state[action.cardId], action) }
     case REHYDRATE:
       incoming = action.payload.cards
-      if (incoming) return { ...state, ...incoming.cards }
+      if (incoming) return { ...state, ...incoming }
       return state
     default:
       return state
