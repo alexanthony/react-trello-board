@@ -21,7 +21,9 @@ const Card = props => {
     >
       <div className="item-container">
         <div className="item-content">
-          <div className="item-name">{`${item.title}`}</div>
+          <div className="item-name">
+            {item.title}
+          </div>
         </div>
       </div>
     </div>
