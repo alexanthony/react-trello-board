@@ -5,7 +5,7 @@ import { RIEInput } from 'riek'
 
 import { EditActions } from '../../redux/edit'
 import { selectedCardSelector, selectedCardListSelector } from '../../redux'
-import { ListActions } from '../../redux/lists'
+import { CardActions } from '../../redux/cards'
 
 const modalStyle = {
   overlay: {
@@ -64,7 +64,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onHideModal: () => dispatch(EditActions.dismissEditCard()),
   onTitleChange: (cardId, newTitle, listId) =>
-    dispatch(ListActions.setCardTitle(cardId, newTitle, listId))
+    dispatch(CardActions.setCardTitle(cardId, newTitle, listId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardModal)

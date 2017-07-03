@@ -1,26 +1,16 @@
 import { REHYDRATE } from 'redux-persist/constants'
 import shortid from 'shortid'
 
-// import {
-//   MOVE_CARD,
-//   MOVE_LIST,
-//   TOGGLE_DRAGGING,
-//   ADD_CARD,
-//   SET_LIST_NAME,
-//   ADD_LIST
-// } from '../actions/lists'
+import { isBlank } from '../utils'
 
 export const actionTypes = {
   MOVE_CARD: 'MOVE_CARD',
   MOVE_LIST: 'MOVE_LIST',
   TOGGLE_DRAGGING: 'TOGGLE_DRAGGING',
   ADD_CARD: 'ADD_CARD',
-  SET_CARD_TITLE: 'SET_CARD_TITLE',
   SET_LIST_NAME: 'SET_LIST_NAME',
   ADD_LIST: 'ADD_LIST'
 }
-
-const isBlank = aString => !aString || aString.trim().length === 0
 
 const actionCreators = {
   moveList: (lastX, nextX) => ({ type: actionTypes.MOVE_LIST, lastX, nextX }),
@@ -40,12 +30,6 @@ const actionCreators = {
     title,
     listId,
     id: shortid.generate()
-  }),
-
-  setCardTitle: (cardId, newTitle) => ({
-    type: actionTypes.SET_CARD_TITLE,
-    cardId,
-    newTitle: isBlank(newTitle) ? 'Card' : newTitle
   }),
 
   setListName: (listId, newName) => ({
