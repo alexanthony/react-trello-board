@@ -9,7 +9,8 @@ export const actionTypes = {
   TOGGLE_DRAGGING: 'TOGGLE_DRAGGING',
   ADD_CARD: 'ADD_CARD',
   SET_LIST_NAME: 'SET_LIST_NAME',
-  ADD_LIST: 'ADD_LIST'
+  ADD_LIST: 'ADD_LIST',
+  DELETE_CARD: 'DELETE_CARD'
 }
 
 const actionCreators = {
@@ -40,6 +41,11 @@ const actionCreators = {
 
   addList: () => ({
     type: actionTypes.ADD_LIST
+  }),
+
+  deleteCard: cardId => ({
+    type: actionTypes.DELETE_CARD,
+    cardId
   })
 }
 
@@ -113,6 +119,19 @@ const lists = (state = initialState, action) => {
         id: newLists.length
       })
 
+      return { ...state, lists: newLists }
+    }
+    case actionTypes.DELETE_CARD: {
+      const newLists = [...state.lists]
+      const listWithCardPos = newLists.findIndex(
+        list => list && list.cards.indexOf(action.cardId) !== -1
+      )
+      const listWithCard = newLists[listWithCardPos]
+      const cardPos = listWithCard.cards.indexOf(action.cardId)
+      newLists[listWithCardPos] = {
+        ...listWithCard,
+        cards: [...listWithCard.cards.splice(cardPos, 1)]
+      }
       return { ...state, lists: newLists }
     }
     case REHYDRATE:

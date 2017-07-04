@@ -44,12 +44,17 @@ const card = (state = {}, action) => {
 
 export const reducer = (state = {}, action) => {
   let incoming
+  let newState
   switch (action.type) {
     case ListActionTypes.ADD_CARD:
       return { ...state, [action.id]: card(state[action.id], action) }
     case actionTypes.SET_CARD_TITLE:
     case actionTypes.SET_CARD_DESCRIPTION:
       return { ...state, [action.cardId]: card(state[action.cardId], action) }
+    case ListActionTypes.DELETE_CARD:
+      newState = { ...state }
+      delete newState[action.cardId]
+      return newState
     case REHYDRATE:
       incoming = action.payload.cards
       if (incoming) return { ...state, ...incoming }

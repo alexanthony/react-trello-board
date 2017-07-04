@@ -6,6 +6,7 @@ import { RIEInput, RIETextArea } from 'riek'
 import { EditActions } from '../../redux/edit'
 import { selectedCardSelector, selectedCardListSelector } from '../../redux'
 import { CardActions } from '../../redux/cards'
+import { ListActions } from '../../redux/lists'
 
 const modalStyle = {
   overlay: {
@@ -25,6 +26,7 @@ const CardModal = ({
   card = { title: '' },
   onTitleChange,
   onDescriptionChange,
+  onDeleteCard,
   list
 }) =>
   <Modal isOpen={showModal} onRequestClose={onHideModal} style={modalStyle}>
@@ -48,6 +50,12 @@ const CardModal = ({
       classEditing="card-description-editing"
       rows={10}
     />
+    <input
+      type="button"
+      className="card-delete-button"
+      value="Delete"
+      onClick={() => onDeleteCard(card.id)}
+    />
   </Modal>
 
 CardModal.propTypes = {
@@ -59,6 +67,7 @@ CardModal.propTypes = {
   }),
   onTitleChange: PropTypes.func,
   onDescriptionChange: PropTypes.func,
+  onDeleteCard: PropTypes.func,
   list: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string
@@ -76,7 +85,11 @@ const mapDispatchToProps = dispatch => ({
   onTitleChange: (cardId, newTitle) =>
     dispatch(CardActions.setCardTitle(cardId, newTitle)),
   onDescriptionChange: (cardId, newDescription) =>
-    dispatch(CardActions.setCardDescription(cardId, newDescription))
+    dispatch(CardActions.setCardDescription(cardId, newDescription)),
+  onDeleteCard: cardId => {
+    dispatch(ListActions.deleteCard(cardId))
+    dispatch(EditActions.dismissEditCard())
+  }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardModal)
