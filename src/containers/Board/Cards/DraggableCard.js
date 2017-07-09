@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { DragSource } from 'react-dnd'
 import { getEmptyImage } from 'react-dnd-html5-backend'
+import sizeMe from 'react-sizeme'
 
 import Card from './Card'
 
@@ -79,6 +80,6 @@ const collectDragSource = (connectDragSource, monitor) => ({
   isDragging: monitor.isDragging()
 })
 
-export default DragSource('card', cardSource, collectDragSource, OPTIONS)(
-  CardComponent
+export default sizeMe({ monitorWidth: false, monitorHeight: true })(
+  DragSource('card', cardSource, collectDragSource, OPTIONS)(CardComponent)
 )

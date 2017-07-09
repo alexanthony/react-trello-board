@@ -5,17 +5,22 @@ import { findDOMNode } from 'react-dom'
 import Card from './DraggableCard'
 import { CARD_HEIGHT, CARD_MARGIN, OFFSET_HEIGHT } from '../../../constants.js'
 
-const getPlaceholderIndex = (y, scrollY) => {
+const getPlaceholderIndex = (y, scrollY, cards, cardHeights) => {
   // shift placeholder if y position more than card height / 2
   const yPos = y - OFFSET_HEIGHT + scrollY
-  let placeholderIndex
-  if (yPos < CARD_HEIGHT / 2) {
-    placeholderIndex = -1 // place at the start
-  } else {
-    placeholderIndex = Math.floor(
-      (yPos - CARD_HEIGHT / 2) / (CARD_HEIGHT + CARD_MARGIN)
-    )
+  let placeholderIndex = -1
+  let cardHeightAccumulator = 0
+
+  for (let i = 0; i < cards.length; i++) {
+    const cardHeight = cardHeights[cards[i].id] || CARD_HEIGHT
+    if (yPos - cardHeightAccumulator < cardHeight / 2) {
+      break
+    } else {
+      cardHeightAccumulator = cardHeightAccumulator + cardHeight + CARD_MARGIN
+      placeholderIndex++
+    }
   }
+
   return placeholderIndex
 }
 
@@ -47,7 +52,9 @@ const specs = {
     // defines where placeholder is rendered
     const placeholderIndex = getPlaceholderIndex(
       monitor.getClientOffset().y,
-      findDOMNode(component).scrollTop
+      findDOMNode(component).scrollTop,
+      component.props.cards,
+      component.state.cardHeights
     )
 
     // horizontal scroll
@@ -98,8 +105,15 @@ class Cards extends Component {
     super(props)
     this.state = {
       placeholderIndex: undefined,
-      isScrolling: false
+      isScrolling: false,
+      cardHeights: {}
     }
+  }
+
+  onSize = (size, id) => {
+    this.setState({
+      cardHeights: { ...this.state.cardHeights, [id]: size.height }
+    })
   }
 
   render() {
@@ -125,6 +139,7 @@ class Cards extends Component {
             item={item}
             key={`${item.id}_${item.title}`} // HACK - forces update when title changes
             stopScrolling={this.props.stopScrolling}
+            onSize={size => this.onSize(size, item.id)}
           />
         )
       }
