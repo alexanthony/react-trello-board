@@ -120,13 +120,24 @@ class Cards extends Component {
     const { connectDropTarget, x, cards, isOver, canDrop } = this.props
     const { placeholderIndex } = this.state
 
+    let placeholderHeight = CARD_HEIGHT
+    if (this.props.item) {
+      placeholderHeight = this.props.item.clientHeight || CARD_HEIGHT
+    }
+
     let isPlaceHold = false
     let cardList = []
     cards.forEach((item, i) => {
       if (isOver && canDrop) {
         isPlaceHold = false
         if (i === 0 && placeholderIndex === -1) {
-          cardList.push(<div key="placeholder" className="item placeholder" />)
+          cardList.push(
+            <div
+              key="placeholder"
+              className="item placeholder"
+              style={{ height: placeholderHeight }}
+            />
+          )
         } else if (placeholderIndex > i) {
           isPlaceHold = true
         }
@@ -144,13 +155,25 @@ class Cards extends Component {
         )
       }
       if (isOver && canDrop && placeholderIndex === i) {
-        cardList.push(<div key="placeholder" className="item placeholder" />)
+        cardList.push(
+          <div
+            key="placeholder"
+            className="item placeholder"
+            style={{ height: placeholderHeight }}
+          />
+        )
       }
     })
 
     // if placeholder index is greater than array.length, display placeholder as last
     if (isPlaceHold) {
-      cardList.push(<div key="placeholder" className="item placeholder" />)
+      cardList.push(
+        <div
+          key="placeholder"
+          className="item placeholder"
+          style={{ height: placeholderHeight }}
+        />
+      )
     }
 
     // if there is no items in cards currently, display a placeholder anyway
