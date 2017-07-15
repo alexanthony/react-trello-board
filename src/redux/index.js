@@ -5,12 +5,14 @@ import { createSelector } from 'reselect'
 import lists from './lists'
 import { reducer as edit } from './edit'
 import { reducer as cards } from './cards'
+import { reducer as labelTypes } from './labelTypes'
 
 const rootReducer = combineReducers({
   routing: routerReducer,
   lists,
   edit,
-  cards
+  cards,
+  labelTypes
 })
 
 export default rootReducer
@@ -75,4 +77,29 @@ export const cardsByListSelector = createSelector(
     })
     return result
   }
+)
+
+const labelTypesSelector = state => state.labelTypes
+
+export const labelTypesArraySelector = createSelector(
+  labelTypesSelector,
+  types => Object.values(types)
+)
+
+export const labelsByCardSelector = createSelector(
+  labelTypesSelector,
+  cardsSelector,
+  (lt, cs) => {
+    const result = {}
+    Object.values(cs).forEach(c => {
+      result[c.id] = c.labels.map(l => lt[l])
+    })
+    return result
+  }
+)
+
+export const selectedCardLabelsSelector = createSelector(
+  selectedCardSelector,
+  labelTypesSelector,
+  (selectedCard, types) => selectedCard.labels.map(label => types[label])
 )

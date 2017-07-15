@@ -1,12 +1,14 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes, Component } from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
 import { RIEInput, RIETextArea } from 'riek'
+import { Button, Popup } from 'semantic-ui-react'
 
 import { EditActions } from '../../redux/edit'
 import { selectedCardSelector, selectedCardListSelector } from '../../redux'
 import { CardActions } from '../../redux/cards'
 import { ListActions } from '../../redux/lists'
+import LabelDropdown from './LabelDropdown'
 
 const modalStyle = {
   overlay: {
@@ -19,44 +21,68 @@ const modalStyle = {
     backgroundColor: '#edeff0'
   }
 }
+class CardModal extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { showLabelMenu: false }
+  }
+  onTitleChange = update => {
+    this.props.onTitleChange(this.props.card.id, update.title)
+  }
 
-const CardModal = ({
-  showModal,
-  onHideModal,
-  card = { title: '' },
-  onTitleChange,
-  onDescriptionChange,
-  onDeleteCard,
-  list
-}) =>
-  <Modal isOpen={showModal} onRequestClose={onHideModal} style={modalStyle}>
-    <RIEInput
-      propName="title"
-      value={card.title}
-      change={update => onTitleChange(card.id, update.title)}
-      className="card-title"
-      classEditing="card-title-editing"
-    />
-    <div className="card-list-name">
-      <span>
-        from list {list.name}
-      </span>
-    </div>
-    <RIETextArea
-      propName="description"
-      value={card.description}
-      change={update => onDescriptionChange(card.id, update.description)}
-      className="card-description"
-      classEditing="card-description-editing"
-      rows={10}
-    />
-    <input
-      type="button"
-      className="card-delete-button"
-      value="Delete"
-      onClick={() => onDeleteCard(card.id)}
-    />
-  </Modal>
+  onDescriptionChange = update => {
+    this.props.onDescriptionChange(this.props.card.id, update.description)
+  }
+
+  onDeleteCard = () => {
+    this.props.onDeleteCard(this.props.card.id)
+  }
+
+  toggleLabelMenu = () => {
+    this.setState({ showLabelMenu: !this.state.showLabelMenu })
+  }
+
+  toggleLabel = labelId => {
+    this.props.toggleLabel(this.props.card.id, labelId)
+  }
+
+  render() {
+    const { showModal, onHideModal, card = { title: '' }, list } = this.props
+    return (
+      <Modal isOpen={showModal} onRequestClose={onHideModal} style={modalStyle}>
+        <RIEInput
+          propName="title"
+          value={card.title}
+          change={this.onTitleChange}
+          className="card-title"
+          classEditing="card-title-editing"
+        />
+        <div className="card-list-name">
+          <span>
+            from list <u>{list.name}</u>
+          </span>
+        </div>
+        <RIETextArea
+          propName="description"
+          value={card.description}
+          change={this.onDescriptionChange}
+          className="card-description"
+          classEditing="card-description-editing"
+          rows={10}
+        />
+        <Button onClick={this.onDeleteCard}>Delete</Button>
+        <Popup
+          trigger={<Button>Labels</Button>}
+          on="click"
+          position="right center"
+          basic
+        >
+          <LabelDropdown onToggleLabel={this.toggleLabel} />
+        </Popup>
+      </Modal>
+    )
+  }
+}
 
 CardModal.propTypes = {
   showModal: PropTypes.bool,
@@ -71,7 +97,8 @@ CardModal.propTypes = {
   list: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string
-  })
+  }),
+  toggleLabel: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -89,7 +116,9 @@ const mapDispatchToProps = dispatch => ({
   onDeleteCard: cardId => {
     dispatch(ListActions.deleteCard(cardId))
     dispatch(EditActions.dismissEditCard())
-  }
+  },
+  toggleLabel: (cardId, labelId) =>
+    dispatch(CardActions.toggleLabel(cardId, labelId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardModal)

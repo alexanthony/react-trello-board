@@ -30,7 +30,7 @@ const actionCreators = {
     type: actionTypes.ADD_CARD,
     title,
     listId,
-    id: shortid.generate()
+    cardId: shortid.generate()
   }),
 
   setListName: (listId, newName) => ({
@@ -96,7 +96,7 @@ const lists = (state = initialState, action) => {
       const newLists = [...state.lists]
       newLists[action.listId] = {
         ...newLists[action.listId],
-        cards: [...newLists[action.listId].cards, action.id]
+        cards: [...newLists[action.listId].cards, action.cardId]
       }
 
       return { ...state, lists: newLists }

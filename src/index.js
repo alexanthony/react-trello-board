@@ -6,6 +6,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
+import 'semantic-ui-css/semantic.min.css'
 
 import { routes } from './routes'
 

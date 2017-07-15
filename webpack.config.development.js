@@ -35,6 +35,10 @@ module.exports = {
         loader: 'style-loader!css-loader!stylus-loader'
       },
       {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
+      },
+      {
         test: /\.(jpg|jpeg|gif|png|ico|ttf|otf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
         loader: 'file-loader?name=[path][name].[ext]'
       }

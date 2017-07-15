@@ -5,7 +5,8 @@ import { isBlank } from '../utils'
 
 export const actionTypes = {
   SET_CARD_TITLE: 'SET_CARD_TITLE',
-  SET_CARD_DESCRIPTION: 'SET_CARD_DESCRIPTION'
+  SET_CARD_DESCRIPTION: 'SET_CARD_DESCRIPTION',
+  TOGGLE_LABEL: 'TOGGLE_LABEL'
 }
 
 const actionCreators = {
@@ -20,26 +21,54 @@ const actionCreators = {
     newDescription: isBlank(newDescription)
       ? 'Click to edit description...'
       : newDescription
+  }),
+  toggleLabel: (cardId, labelId) => ({
+    type: actionTypes.TOGGLE_LABEL,
+    cardId,
+    labelId
   })
 }
 
 export const CardActions = actionCreators
 
+const toggleItemInList = (list, item) => {
+  const index = list.indexOf(item)
+  if (index !== -1) {
+    const newList = [...list]
+    newList.splice(index, 1)
+    return newList
+  }
+  return [...list, item]
+}
+
 const card = (state = {}, action) => {
   switch (action.type) {
     case ListActionTypes.ADD_CARD:
       return {
-        id: action.id,
+        id: action.cardd,
         title: action.title,
-        description: 'Click to edit description...'
+        description: 'Click to edit description...',
+        labels: []
       }
     case actionTypes.SET_CARD_TITLE:
       return { ...state, title: action.newTitle }
     case actionTypes.SET_CARD_DESCRIPTION:
       return { ...state, description: action.newDescription }
+    case actionTypes.TOGGLE_LABEL:
+      return {
+        ...state,
+        labels: toggleItemInList(state.labels, action.labelId)
+      }
     default:
       return state
   }
+}
+
+const defaultCard = {
+  id: '',
+  title: 'Card title',
+  description: 'Card description',
+  labels: []
 }
 
 export const reducer = (state = {}, action) => {
@@ -47,9 +76,9 @@ export const reducer = (state = {}, action) => {
   let newState
   switch (action.type) {
     case ListActionTypes.ADD_CARD:
-      return { ...state, [action.id]: card(state[action.id], action) }
     case actionTypes.SET_CARD_TITLE:
     case actionTypes.SET_CARD_DESCRIPTION:
+    case actionTypes.TOGGLE_LABEL:
       return { ...state, [action.cardId]: card(state[action.cardId], action) }
     case ListActionTypes.DELETE_CARD:
       newState = { ...state }
@@ -57,7 +86,13 @@ export const reducer = (state = {}, action) => {
       return newState
     case REHYDRATE:
       incoming = action.payload.cards
-      if (incoming) return { ...state, ...incoming }
+      // Fix any old data
+      if (incoming) {
+        Object.keys(incoming).forEach(cardId => {
+          incoming[cardId] = { ...defaultCard, ...incoming[cardId] }
+        })
+        return { ...state, ...incoming }
+      }
       return state
     default:
       return state
