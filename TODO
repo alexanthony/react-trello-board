@@ -4,3 +4,8 @@
 * label deleting
 * JSON export
 * spreadsheet export
+* markdown
+* about dialog
+* tree shaking
+* semantic modal
+* remove router

@@ -45,7 +45,7 @@ const card = (state = {}, action) => {
   switch (action.type) {
     case ListActionTypes.ADD_CARD:
       return {
-        id: action.cardd,
+        id: action.cardId,
         title: action.title,
         description: 'Click to edit description...',
         labels: []
