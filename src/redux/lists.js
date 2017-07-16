@@ -127,10 +127,12 @@ const lists = (state = initialState, action) => {
         list => list && list.cards.indexOf(action.cardId) !== -1
       )
       const listWithCard = newLists[listWithCardPos]
-      const cardPos = listWithCard.cards.indexOf(action.cardId)
+      // const cardPos = listWithCard.cards.indexOf(action.cardId)
       newLists[listWithCardPos] = {
         ...listWithCard,
-        cards: [...listWithCard.cards.splice(cardPos, 1)]
+        cards: [
+          ...listWithCard.cards.filter(cardId => cardId !== action.cardId)
+        ]
       }
       return { ...state, lists: newLists }
     }

@@ -114,8 +114,8 @@ const mapDispatchToProps = dispatch => ({
   onDescriptionChange: (cardId, newDescription) =>
     dispatch(CardActions.setCardDescription(cardId, newDescription)),
   onDeleteCard: cardId => {
-    dispatch(ListActions.deleteCard(cardId))
     dispatch(EditActions.dismissEditCard())
+    dispatch(ListActions.deleteCard(cardId))
   },
   toggleLabel: (cardId, labelId) =>
     dispatch(CardActions.toggleLabel(cardId, labelId))

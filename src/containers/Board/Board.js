@@ -86,23 +86,25 @@ class Board extends Component {
     const { lists } = this.props
 
     return (
-      <div style={{ height: '100%' }}>
-        <CardModal />
-        <CustomDragLayer snapToGrid={false} />
-        {lists.map((item, i) =>
-          <CardsContainer
-            key={item.id}
-            id={item.id}
-            item={item}
-            moveCard={this.moveCard}
-            moveList={this.moveList}
-            startScrolling={this.startScrolling}
-            stopScrolling={this.stopScrolling}
-            isScrolling={this.state.isScrolling}
-            x={i}
-          />
-        )}
-        <NewListPlaceholder onAddList={this.props.addList} />
+      <div className="board">
+        <div className="board-inner">
+          <CardModal />
+          <CustomDragLayer snapToGrid={false} />
+          {lists.map((item, i) =>
+            <CardsContainer
+              key={item.id}
+              id={item.id}
+              item={item}
+              moveCard={this.moveCard}
+              moveList={this.moveList}
+              startScrolling={this.startScrolling}
+              stopScrolling={this.stopScrolling}
+              isScrolling={this.state.isScrolling}
+              x={i}
+            />
+          )}
+          <NewListPlaceholder onAddList={this.props.addList} />
+        </div>
       </div>
     )
   }

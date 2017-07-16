@@ -9,10 +9,9 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import 'semantic-ui-css/semantic.min.css'
 
 import { routes } from './routes'
+import './assets/temp.styl'
 
 import configureStore from './store/configureStore'
-
-import './assets/temp.styl'
 
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)

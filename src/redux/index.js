@@ -6,13 +6,15 @@ import lists from './lists'
 import { reducer as edit } from './edit'
 import { reducer as cards } from './cards'
 import { reducer as labelTypes } from './labelTypes'
+import { reducer as ui } from './ui'
 
 const rootReducer = combineReducers({
   routing: routerReducer,
   lists,
   edit,
   cards,
-  labelTypes
+  labelTypes,
+  ui
 })
 
 export default rootReducer

@@ -25,19 +25,17 @@ img
 	max-width 100%
 textarea
 	font-family inherit
-
 main
-	padding 20px 10px
-	overflow-x auto
-	overflow-y hidden
-	height 100%
 	white-space nowrap
+	height 100%
+	display flex
+	flex-direction column
 	clearfix()
 .desk-container
 	height 100%
 	display inline-block
 	width 270px
-	margin-right 20px
+	margin 0 5px
 .desk, .desk-placeholder, .desk-placeholder:hover
 	width 270px
 	display flex
@@ -197,3 +195,30 @@ button.swatch-button
 	border-radius 3px
 .add-label-container
 	padding-top 5px
+.header
+	display flex
+	justify-content space-between
+	background-color rgba(0,0,0,0.12)
+	height 40px
+	padding 5px
+.board
+	flex-grow 1
+	position relative
+	overflow-y auto
+.board-inner
+	overflow-x auto
+	overflow-y hidden
+	position absolute
+	top 0
+	bottom 0
+	right 0
+	left 0
+	user-select none
+	white-space nowrap
+	display flex
+	padding 10px 0
+button.ui.button.header-button
+	background-color rgba(0,0,0,0.12)
+	color rgba(255,2555,255,0.7)
+	&:hover
+		background-color rgba(0,0,0,0.3)

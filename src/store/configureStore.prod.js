@@ -17,7 +17,7 @@ const configureStore = initialState => {
   )
 
   // begin periodically persisting the store
-  persistStore(store, { blacklist: ['routing'] })
+  persistStore(store, { blacklist: ['routing', 'ui', 'edit'] })
 
   return store
 }
