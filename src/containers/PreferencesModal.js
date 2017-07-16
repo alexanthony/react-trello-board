@@ -2,9 +2,11 @@ import React, { PropTypes, Component } from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
 import { RIEInput, RIETextArea } from 'riek'
-import { Button, Popup } from 'semantic-ui-react'
+import { Button, Popup, Header } from 'semantic-ui-react'
 
 import { UIActions, Modals } from '../redux/ui'
+import { PreferencesActions } from '../redux/preferences'
+import FileUploadInput from './FileUploadInput'
 
 const modalStyle = {
   overlay: {
@@ -18,14 +20,24 @@ const modalStyle = {
   }
 }
 
-const PreferencesModal = ({ showModal, onHideModal }) =>
+const PreferencesModal = ({
+  showModal,
+  onHideModal,
+  onBackgroundImageUpload,
+  onClearBackground
+}) =>
   <Modal isOpen={showModal} onRequestClose={onHideModal} style={modalStyle}>
-    PreferencesModal
+    <Header>Preferences</Header>
+    <Header size="small">Background Image</Header>
+    <FileUploadInput onFileUpload={onBackgroundImageUpload} />
+    <Button onClick={onClearBackground}>Clear</Button>
   </Modal>
 
 PreferencesModal.propTypes = {
   showModal: PropTypes.bool,
-  onHideModal: PropTypes.func
+  onHideModal: PropTypes.func,
+  onBackgroundImageUpload: PropTypes.func,
+  onClearBackground: PropTypes.func
 }
 
 const mapStateToProps = state => ({
@@ -33,7 +45,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onHideModal: () => dispatch(UIActions.dismissModal())
+  onHideModal: () => dispatch(UIActions.dismissModal()),
+  onBackgroundImageUpload: image =>
+    dispatch(PreferencesActions.setBackgroundImage(image)),
+  onClearBackground: () => dispatch(PreferencesActions.clearBackgroundImage())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreferencesModal)

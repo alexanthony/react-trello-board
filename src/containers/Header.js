@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react'
 import { UIActions, Modals } from '../redux/ui'
 
 const Header = ({ showPreferences }) =>
-  <div className="header">
+  <div className="board-header">
     <Button
       className="header-button"
       onClick={showPreferences}
