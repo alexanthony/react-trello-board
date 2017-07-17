@@ -1,6 +1,5 @@
 * background - tile etc
 * pictures/attachments
-* label deleting
 * JSON export
 * spreadsheet export
 * markdown
@@ -9,7 +8,7 @@
 * semantic modal
 * remove router
 * make file upload input non-fugly
-* nice scrollbars
+* nice scrollbars - https://github.com/malte-wessel/react-custom-scrollbars/blob/master/docs/usage.md
 * due dates
-* filtering
+* filtering - disable dnd during filtering?
 * refactor components
