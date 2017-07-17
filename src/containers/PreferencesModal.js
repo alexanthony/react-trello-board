@@ -1,8 +1,7 @@
-import React, { PropTypes, Component } from 'react'
+import React, { PropTypes } from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
-import { RIEInput, RIETextArea } from 'riek'
-import { Button, Popup, Header } from 'semantic-ui-react'
+import { Button, Header } from 'semantic-ui-react'
 
 import { UIActions, Modals } from '../redux/ui'
 import { PreferencesActions } from '../redux/preferences'

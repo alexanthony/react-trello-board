@@ -1,4 +1,4 @@
-* background
+* background - tile etc
 * pictures
 * list deleting
 * label deleting
@@ -9,3 +9,4 @@
 * tree shaking
 * semantic modal
 * remove router
+* make file upload input non-fugly

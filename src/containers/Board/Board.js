@@ -85,14 +85,8 @@ class Board extends Component {
   render() {
     const { lists } = this.props
 
-    const style = {}
-    if (this.props.backgroundImage) {
-      style.backgroundImage = `url(${this.props.backgroundImage})`
-      style.backgroundSize = 'cover'
-    }
-
     return (
-      <div className="board" style={style}>
+      <div className="board">
         <div className="board-inner">
           <CardModal />
           <CustomDragLayer snapToGrid={false} />
@@ -117,8 +111,7 @@ class Board extends Component {
 }
 
 const mapStateToProps = state => ({
-  lists: state.lists.lists,
-  backgroundImage: state.preferences.background.image
+  lists: state.lists.lists
 })
 
 const mapDispatchToProps = dispatch => ({
