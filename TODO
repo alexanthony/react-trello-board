@@ -1,6 +1,5 @@
 * background - tile etc
-* pictures
-* list deleting
+* pictures/attachments
 * label deleting
 * JSON export
 * spreadsheet export
@@ -10,3 +9,7 @@
 * semantic modal
 * remove router
 * make file upload input non-fugly
+* nice scrollbars
+* due dates
+* filtering
+* refactor components

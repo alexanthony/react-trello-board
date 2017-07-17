@@ -10,7 +10,8 @@ export const actionTypes = {
   ADD_CARD: 'ADD_CARD',
   SET_LIST_NAME: 'SET_LIST_NAME',
   ADD_LIST: 'ADD_LIST',
-  DELETE_CARD: 'DELETE_CARD'
+  DELETE_CARD: 'DELETE_CARD',
+  DELETE_LIST: 'DELETE_LIST'
 }
 
 const actionCreators = {
@@ -46,6 +47,10 @@ const actionCreators = {
   deleteCard: cardId => ({
     type: actionTypes.DELETE_CARD,
     cardId
+  }),
+  deleteList: listId => ({
+    type: actionTypes.DELETE_LIST,
+    listId
   })
 }
 
@@ -134,6 +139,10 @@ const lists = (state = initialState, action) => {
           ...listWithCard.cards.filter(cardId => cardId !== action.cardId)
         ]
       }
+      return { ...state, lists: newLists }
+    }
+    case actionTypes.DELETE_LIST: {
+      const newLists = state.lists.filter(list => list.id !== action.listId)
       return { ...state, lists: newLists }
     }
     case REHYDRATE:

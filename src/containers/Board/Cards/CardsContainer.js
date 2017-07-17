@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { DropTarget, DragSource } from 'react-dnd'
 import { connect } from 'react-redux'
 import { RIEInput } from 'riek'
+import { Button, Popup, Header, Divider } from 'semantic-ui-react'
 
 import { ListActions } from '../../../redux/lists'
 import Cards from './Cards'
@@ -21,13 +22,15 @@ class CardsContainer extends Component {
     isScrolling: PropTypes.bool,
     addCard: PropTypes.func,
     setListName: PropTypes.func,
-    cards: PropTypes.array
+    cards: PropTypes.array,
+    deleteList: PropTypes.func
   }
 
   constructor(props) {
     super(props)
     this.onAddClicked = this.onAddClicked.bind(this)
     this.onListTitleChange = this.onListTitleChange.bind(this)
+    this.onDeleteList = this.onDeleteList.bind(this)
   }
 
   onAddClicked() {
@@ -36,6 +39,10 @@ class CardsContainer extends Component {
 
   onListTitleChange(update) {
     this.props.setListName(this.props.item.id, update.name)
+  }
+
+  onDeleteList() {
+    this.props.deleteList(this.props.item.id)
   }
 
   render() {
@@ -63,6 +70,28 @@ class CardsContainer extends Component {
                   className="desk-name-base"
                   classEditing="desk-name-editing"
                 />
+              </div>
+              <div>
+                <Popup
+                  trigger={
+                    <Button
+                      icon="ellipsis vertical"
+                      className="list-menu-button"
+                      size="mini"
+                    />
+                  }
+                  on="click"
+                  position="right-center"
+                  basic
+                >
+                  <div className="list-menu">
+                    <Header size="small">List Actions</Header>
+                    <Divider />
+                    <a href="#" onClick={this.onDeleteList}>
+                      Delete List
+                    </a>
+                  </div>
+                </Popup>
               </div>
             </div>
             <Cards
@@ -129,7 +158,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   addCard: listId => dispatch(ListActions.addCard(listId, 'New Card')),
   setListName: (listId, newName) =>
-    dispatch(ListActions.setListName(listId, newName))
+    dispatch(ListActions.setListName(listId, newName)),
+  deleteList: listId => dispatch(ListActions.deleteList(listId))
 })
 
 export default DropTarget('list', listTarget, connectDragSource => ({
