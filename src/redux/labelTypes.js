@@ -6,7 +6,8 @@ import { randomColour } from '../utils'
 export const actionTypes = {
   ADD_LABEL_TYPE: 'ADD_LABEL_TYPE',
   SET_LABEL_DESCRIPTION: 'SET_LABEL_DESCRIPTION',
-  SET_LABEL_COLOUR: 'SET_LABEL_COLOUR'
+  SET_LABEL_COLOUR: 'SET_LABEL_COLOUR',
+  DELETE_LABEL: 'DELETE_LABEL'
 }
 
 const actionCreators = {
@@ -25,6 +26,10 @@ const actionCreators = {
     type: actionTypes.SET_LABEL_COLOUR,
     colour,
     id: labelId
+  }),
+  deleteLabel: labelId => ({
+    type: actionTypes.DELETE_LABEL,
+    labelId
   })
 }
 
@@ -49,6 +54,7 @@ const label = (state = {}, action) => {
 
 export const reducer = (state = {}, action) => {
   let incoming
+  let newState
   switch (action.type) {
     case actionTypes.ADD_LABEL_TYPE:
     case actionTypes.SET_LABEL_COLOUR:
@@ -57,6 +63,10 @@ export const reducer = (state = {}, action) => {
         ...state,
         [action.id]: label(state[action.id], action)
       }
+    case actionTypes.DELETE_LABEL:
+      newState = { ...state }
+      delete newState[action.labelId]
+      return newState
     case REHYDRATE:
       incoming = action.payload.labelTypes
       if (incoming) return { ...state, ...incoming }

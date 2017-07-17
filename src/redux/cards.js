@@ -2,6 +2,7 @@ import { REHYDRATE } from 'redux-persist/constants'
 
 import { actionTypes as ListActionTypes } from './lists'
 import { isBlank } from '../utils'
+import { actionTypes as LabelActionTypes } from './labelTypes'
 
 export const actionTypes = {
   SET_CARD_TITLE: 'SET_CARD_TITLE',
@@ -59,6 +60,14 @@ const card = (state = {}, action) => {
         ...state,
         labels: toggleItemInList(state.labels, action.labelId)
       }
+    case LabelActionTypes.DELETE_LABEL:
+      if (state.labels.indexOf(action.labelId) === -1) {
+        return state
+      }
+      return {
+        ...state,
+        labels: state.labels.filter(labelType => labelType !== action.labelId)
+      }
     default:
       return state
   }
@@ -83,6 +92,12 @@ export const reducer = (state = {}, action) => {
     case ListActionTypes.DELETE_CARD:
       newState = { ...state }
       delete newState[action.cardId]
+      return newState
+    case LabelActionTypes.DELETE_LABEL:
+      newState = { ...state }
+      Object.keys(state).forEach(cardId => {
+        newState[cardId] = card(state[cardId], action)
+      })
       return newState
     case REHYDRATE:
       incoming = action.payload.cards

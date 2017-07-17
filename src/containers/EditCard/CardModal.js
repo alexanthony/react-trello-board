@@ -46,10 +46,19 @@ class CardModal extends Component {
     this.props.toggleLabel(this.props.card.id, labelId)
   }
 
+  hideLabelMenu = () => {
+    this.setState({ showLabelMenu: false })
+  }
+
   render() {
     const { showModal, onHideModal, card = { title: '' }, list } = this.props
     return (
-      <Modal isOpen={showModal} onRequestClose={onHideModal} style={modalStyle}>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={onHideModal}
+        onAfterOpen={this.hideLabelMenu}
+        style={modalStyle}
+      >
         <RIEInput
           propName="title"
           value={card.title}
@@ -76,6 +85,9 @@ class CardModal extends Component {
           on="click"
           position="right center"
           basic
+          onClose={this.toggleLabelMenu}
+          onOpen={this.toggleLabelMenu}
+          open={this.state.showLabelMenu}
         >
           <LabelDropdown onToggleLabel={this.toggleLabel} />
         </Popup>
