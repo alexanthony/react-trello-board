@@ -37,6 +37,7 @@ const Card = props => {
               key={label.id}
               style={labelStyle(label.colour)}
               className="card-label-tag"
+              size="small"
             >
               {label.description}
             </Label>
