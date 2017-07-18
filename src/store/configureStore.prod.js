@@ -1,12 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import { routerMiddleware } from 'react-router-redux'
-import { browserHistory } from 'react-router'
 import { persistStore, autoRehydrate } from 'redux-persist'
 
 import rootReducer from '../redux'
 
-const reduxRouterMiddleware = routerMiddleware(browserHistory)
-const middleware = [reduxRouterMiddleware].filter(Boolean)
+const middleware = []
 
 const configureStore = initialState => {
   const store = createStore(
@@ -17,7 +14,7 @@ const configureStore = initialState => {
   )
 
   // begin periodically persisting the store
-  persistStore(store, { blacklist: ['routing', 'ui', 'edit'] })
+  persistStore(store, { blacklist: ['ui', 'edit'] })
 
   return store
 }

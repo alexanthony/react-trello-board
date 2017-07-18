@@ -6,7 +6,6 @@
 * about dialog
 * tree shaking
 * semantic modal
-* remove router
 * make file upload input non-fugly
 * nice scrollbars - https://github.com/malte-wessel/react-custom-scrollbars/blob/master/docs/usage.md
 * due dates

@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { routerReducer } from 'react-router-redux'
 import { createSelector } from 'reselect'
 
 import lists from './lists'
@@ -10,7 +9,6 @@ import { reducer as ui } from './ui'
 import { reducer as preferences } from './preferences'
 
 const rootReducer = combineReducers({
-  routing: routerReducer,
   lists,
   edit,
   cards,
