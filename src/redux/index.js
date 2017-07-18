@@ -77,7 +77,12 @@ export const cardsByListSelector = createSelector(
   (ls, cs) => {
     const result = {}
     ls.forEach(l => {
-      result[l.id] = l.cards.map(c => cs[c])
+      result[l.id] = l.cards
+        .map(c => cs[c])
+        // This is defence against bad data
+        // If a list has a reference to a card which doesn't exist
+        // then don't include the card in the list
+        .filter(c => c)
     })
     return result
   }
