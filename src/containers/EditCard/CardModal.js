@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
-import { RIEInput, RIETextArea } from 'riek'
+import { RIEInput } from 'riek'
 import { Button, Popup } from 'semantic-ui-react'
 
 import { EditActions } from '../../redux/edit'
@@ -9,6 +9,7 @@ import { selectedCardSelector, selectedCardListSelector } from '../../redux'
 import { CardActions } from '../../redux/cards'
 import { ListActions } from '../../redux/lists'
 import LabelDropdown from './LabelDropdown'
+import MarkdownInlineTextArea from '../MarkdownInlineTextArea'
 
 const modalStyle = {
   overlay: {
@@ -30,8 +31,8 @@ class CardModal extends Component {
     this.props.onTitleChange(this.props.card.id, update.title)
   }
 
-  onDescriptionChange = update => {
-    this.props.onDescriptionChange(this.props.card.id, update.description)
+  onDescriptionChange = newDescription => {
+    this.props.onDescriptionChange(this.props.card.id, newDescription)
   }
 
   onDeleteCard = () => {
@@ -71,14 +72,17 @@ class CardModal extends Component {
             from list <u>{list.name}</u>
           </span>
         </div>
-        <RIETextArea
-          propName="description"
+        <MarkdownInlineTextArea
+          onChange={this.onDescriptionChange}
           value={card.description}
-          change={this.onDescriptionChange}
           className="card-description"
-          classEditing="card-description-editing"
-          rows={10}
+          classNameEditing="card-description-editing"
         />
+        <a href="http://commonmark.org/help/" target="_blank">
+          Markdown Guide
+        </a>
+        <br />
+        <br />
         <Button onClick={this.onDeleteCard}>Delete</Button>
         <Popup
           trigger={<Button>Labels</Button>}

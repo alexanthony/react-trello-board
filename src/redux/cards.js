@@ -19,9 +19,7 @@ const actionCreators = {
   setCardDescription: (cardId, newDescription) => ({
     type: actionTypes.SET_CARD_DESCRIPTION,
     cardId,
-    newDescription: isBlank(newDescription)
-      ? 'Click to edit description...'
-      : newDescription
+    newDescription
   }),
   toggleLabel: (cardId, labelId) => ({
     type: actionTypes.TOGGLE_LABEL,
@@ -48,7 +46,7 @@ const card = (state = {}, action) => {
       return {
         id: action.cardId,
         title: action.title,
-        description: 'Click to edit description...',
+        description: '',
         labels: []
       }
     case actionTypes.SET_CARD_TITLE:

@@ -2,7 +2,6 @@
 * pictures/attachments
 * JSON export
 * spreadsheet export
-* markdown
 * about dialog
 * tree shaking
 * semantic modal
@@ -11,3 +10,4 @@
 * due dates
 * filtering - disable dnd during filtering?
 * refactor components
+* work out how to do production build
