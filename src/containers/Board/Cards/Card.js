@@ -46,8 +46,6 @@ const Card = props => {
   )
 }
 
-// TODO - labels div should be flexbox
-
 Card.propTypes = propTypes
 
 const mapStateToProps = (state, ownProps) => ({
