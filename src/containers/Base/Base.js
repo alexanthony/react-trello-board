@@ -6,7 +6,8 @@ import PreferencesModal from '../PreferencesModal'
 
 const propTypes = {
   children: PropTypes.element.isRequired,
-  backgroundImage: PropTypes.string
+  backgroundImage: PropTypes.string,
+  boardTitle: PropTypes.string
 }
 
 const BaseContainer = props => {
@@ -14,6 +15,10 @@ const BaseContainer = props => {
   if (props.backgroundImage) {
     style.backgroundImage = `url(${props.backgroundImage})`
     style.backgroundSize = 'cover'
+  }
+
+  if (document.title !== props.boardTitle) {
+    document.title = props.boardTitle
   }
 
   return (
@@ -28,7 +33,8 @@ const BaseContainer = props => {
 BaseContainer.propTypes = propTypes
 
 const mapStateToProps = state => ({
-  backgroundImage: state.preferences.background.image
+  backgroundImage: state.preferences.background.image,
+  boardTitle: state.preferences.boardTitle
 })
 
 export default connect(mapStateToProps)(BaseContainer)

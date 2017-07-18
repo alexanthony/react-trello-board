@@ -3,7 +3,8 @@ import { REHYDRATE } from 'redux-persist/constants'
 
 const actionTypes = {
   CLEAR_BACKGROUND_IMAGE: 'CLEAR_BACKGROUND_IMAGE',
-  SET_BACKGROUND_IMAGE: 'SET_BACKGROUND_IMAGE'
+  SET_BACKGROUND_IMAGE: 'SET_BACKGROUND_IMAGE',
+  SET_BOARD_TITLE: 'SET_BOARD_TITLE'
 }
 
 const actionCreators = {
@@ -11,7 +12,8 @@ const actionCreators = {
     type: actionTypes.SET_BACKGROUND_IMAGE,
     image
   }),
-  clearBackgroundImage: () => ({ type: actionTypes.CLEAR_BACKGROUND_IMAGE })
+  clearBackgroundImage: () => ({ type: actionTypes.CLEAR_BACKGROUND_IMAGE }),
+  setBoardTitle: title => ({ type: actionTypes.SET_BOARD_TITLE, title })
 }
 
 export const PreferencesActions = actionCreators
@@ -38,4 +40,13 @@ const image = (state = null, action) => {
 
 const background = combineReducers({ image })
 
-export const reducer = combineReducers({ background })
+const boardTitle = (state = "Alex's Trello Clone", action) => {
+  switch (action.type) {
+    case actionTypes.SET_BOARD_TITLE:
+      return action.title
+    default:
+      return state
+  }
+}
+
+export const reducer = combineReducers({ background, boardTitle })
