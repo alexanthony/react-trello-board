@@ -24,7 +24,7 @@ const BaseContainer = props => {
   return (
     <main style={style}>
       <PreferencesModal />
-      <Header />
+      <Header boardTitle={props.boardTitle} />
       {props.children}
     </main>
   )
