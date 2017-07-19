@@ -2,14 +2,19 @@ import React, { PropTypes, Component } from 'react'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
 import { RIEInput } from 'riek'
-import { Button, Popup } from 'semantic-ui-react'
+import { Button, Popup, Header } from 'semantic-ui-react'
 
 import { EditActions } from '../../redux/edit'
-import { selectedCardSelector, selectedCardListSelector } from '../../redux'
+import {
+  selectedCardSelector,
+  selectedCardListSelector,
+  labelsByCardSelector
+} from '../../redux'
 import { CardActions } from '../../redux/cards'
 import { ListActions } from '../../redux/lists'
 import LabelDropdown from './LabelDropdown'
 import MarkdownInlineTextArea from '../MarkdownInlineTextArea'
+import Labels from '../Board/Cards/Labels'
 
 const modalStyle = {
   overlay: {
@@ -72,6 +77,9 @@ class CardModal extends Component {
             from list <u>{list.name}</u>
           </span>
         </div>
+        {card.description &&
+          card.description !== '' &&
+          <Header size="small">Description</Header>}
         <MarkdownInlineTextArea
           onChange={this.onDescriptionChange}
           value={card.description}
@@ -81,20 +89,24 @@ class CardModal extends Component {
         <a href="http://commonmark.org/help/" target="_blank">
           Markdown Guide
         </a>
-        <br />
-        <br />
-        <Button onClick={this.onDeleteCard}>Delete</Button>
-        <Popup
-          trigger={<Button>Labels</Button>}
-          on="click"
-          position="right center"
-          basic
-          onClose={this.toggleLabelMenu}
-          onOpen={this.toggleLabelMenu}
-          open={this.state.showLabelMenu}
-        >
-          <LabelDropdown onToggleLabel={this.toggleLabel} />
-        </Popup>
+        {this.props.labels &&
+          this.props.labels.length > 0 &&
+          <Header size="small">Labels</Header>}
+        <Labels labels={this.props.labels || []} />
+        <div className="card-actions-container">
+          <Button onClick={this.onDeleteCard}>Delete</Button>
+          <Popup
+            trigger={<Button>Labels</Button>}
+            on="click"
+            position="right center"
+            basic
+            onClose={this.toggleLabelMenu}
+            onOpen={this.toggleLabelMenu}
+            open={this.state.showLabelMenu}
+          >
+            <LabelDropdown onToggleLabel={this.toggleLabel} />
+          </Popup>
+        </div>
       </Modal>
     )
   }
@@ -114,13 +126,15 @@ CardModal.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string
   }),
-  toggleLabel: PropTypes.func
+  toggleLabel: PropTypes.func,
+  labels: PropTypes.array
 }
 
 const mapStateToProps = state => ({
   showModal: state.edit.editCard !== null,
   card: selectedCardSelector(state),
-  list: selectedCardListSelector(state)
+  list: selectedCardListSelector(state),
+  labels: labelsByCardSelector(state)[state.edit.editCard]
 })
 
 const mapDispatchToProps = dispatch => ({

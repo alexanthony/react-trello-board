@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Label } from 'semantic-ui-react'
 
 import { EditActions } from '../../../redux/edit'
 import { labelsByCardSelector } from '../../../redux'
-import { labelStyle } from '../../../utils'
+import Labels from './Labels'
 
 const propTypes = {
   item: PropTypes.object.isRequired,
@@ -30,19 +29,7 @@ const Card = props => {
           </div>
         </div>
       </div>
-      {labels.length > 0 &&
-        <div className="card-labels">
-          {labels.map(label =>
-            <Label
-              key={label.id}
-              style={labelStyle(label.colour)}
-              className="card-label-tag"
-              size="small"
-            >
-              {label.description}
-            </Label>
-          )}
-        </div>}
+      <Labels labels={labels} />
     </div>
   )
 }
