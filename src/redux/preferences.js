@@ -44,6 +44,11 @@ const boardTitle = (state = "Alex's Trello Clone", action) => {
   switch (action.type) {
     case actionTypes.SET_BOARD_TITLE:
       return action.title
+    case REHYDRATE:
+      if (action.payload.preferences && action.payload.preferences.boardTitle) {
+        return action.payload.preferences.boardTitle
+      }
+      return state
     default:
       return state
   }
