@@ -4,6 +4,11 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import rootReducer from '../redux'
 
 const middleware = []
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['ui', 'edit']
+}
 
 const configureStore = initialState => {
   const store = createStore(

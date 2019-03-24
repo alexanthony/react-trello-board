@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { REHYDRATE } from 'redux-persist/constants'
+// import { REHYDRATE } from 'redux-persist/constants'
 
 import { actionTypes as ListActionTypes } from './lists'
 
@@ -23,11 +23,11 @@ const editCard = (state = null, action) => {
       return action.cardId
     case actionTypes.DISMISS_EDIT_CARD:
       return null
-    case REHYDRATE:
-      incoming = action.payload.edit
-      if (incoming && incoming.editCard)
-        return { ...state, ...incoming.editCard }
-      return state
+    // case REHYDRATE:
+    //   incoming = action.payload.edit
+    //   if (incoming && incoming.editCard)
+    //     return { ...state, ...incoming.editCard }
+    //   return state
     default:
       return state
   }

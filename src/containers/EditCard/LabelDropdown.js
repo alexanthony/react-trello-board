@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Header, Divider } from 'semantic-ui-react'
 
@@ -16,10 +17,6 @@ class LabelDropdown extends React.Component {
     this.state = {
       editingLabel: null
     }
-  }
-
-  componentWillMount() {
-    this.setState({ editingLabel: null })
   }
 
   addLabelType = update => {

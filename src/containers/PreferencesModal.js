@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
 import { Button, Header, Form } from 'semantic-ui-react'

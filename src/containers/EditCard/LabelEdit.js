@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Button, Input } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { CirclePicker } from 'react-color'

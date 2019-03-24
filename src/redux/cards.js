@@ -1,4 +1,4 @@
-import { REHYDRATE } from 'redux-persist/constants'
+// import { REHYDRATE } from 'redux-persist/constants'
 
 import { actionTypes as ListActionTypes } from './lists'
 import { isBlank } from '../utils'
@@ -97,16 +97,16 @@ export const reducer = (state = {}, action) => {
         newState[cardId] = card(state[cardId], action)
       })
       return newState
-    case REHYDRATE:
-      incoming = action.payload.cards
-      // Fix any old data
-      if (incoming) {
-        Object.keys(incoming).forEach(cardId => {
-          incoming[cardId] = { ...defaultCard, ...incoming[cardId] }
-        })
-        return { ...state, ...incoming }
-      }
-      return state
+    // case REHYDRATE:
+    //   incoming = action.payload.cards
+    //   // Fix any old data
+    //   if (incoming) {
+    //     Object.keys(incoming).forEach(cardId => {
+    //       incoming[cardId] = { ...defaultCard, ...incoming[cardId] }
+    //     })
+    //     return { ...state, ...incoming }
+    //   }
+    //   return state
     default:
       return state
   }

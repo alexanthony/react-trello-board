@@ -1,4 +1,4 @@
-import { REHYDRATE } from 'redux-persist/constants'
+// import { REHYDRATE } from 'redux-persist/constants'
 import shortid from 'shortid'
 
 import { isBlank } from '../utils'
@@ -144,27 +144,27 @@ const lists = (state = initialState, action) => {
       const newLists = state.lists.filter(list => list.id !== action.listId)
       return { ...state, lists: newLists }
     }
-    case REHYDRATE:
-      incoming = action.payload.lists
-      if (incoming) {
-        // This is our opportunity to tidy data
-        // We don't get the chance to refresh it from an API
-
-        // Check that we have all cards
-        const newLists = []
-        incoming.lists.forEach(list => {
-          const newList = {
-            ...list,
-            cards: list.cards.filter(
-              cardId => cardId && action.payload.cards[cardId]
-            )
-          }
-          newLists.push(newList)
-        })
-        // We don't bother trying to restore isDragging
-        return { ...state, lists: newLists }
-      }
-      return state
+    // case REHYDRATE:
+    //   incoming = action.payload.lists
+    //   if (incoming) {
+    //     // This is our opportunity to tidy data
+    //     // We don't get the chance to refresh it from an API
+    //
+    //     // Check that we have all cards
+    //     const newLists = []
+    //     incoming.lists.forEach(list => {
+    //       const newList = {
+    //         ...list,
+    //         cards: list.cards.filter(
+    //           cardId => cardId && action.payload.cards[cardId]
+    //         )
+    //       }
+    //       newLists.push(newList)
+    //     })
+    //     // We don't bother trying to restore isDragging
+    //     return { ...state, lists: newLists }
+    //   }
+    //   return state
     default:
       return state
   }

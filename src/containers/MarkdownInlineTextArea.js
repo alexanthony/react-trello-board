@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
 
 const rowsOfText = text => text.split('\n').length

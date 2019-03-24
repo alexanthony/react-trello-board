@@ -3,6 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
+  mode: 'development',
   devtool: 'cheap-module-eval-source-map',
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
@@ -23,16 +24,12 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loaders: ['babel'],
+        loaders: ['babel-loader'],
         exclude: /node_modules/,
         include: path.join(__dirname, 'src')
-      },
-      {
-        test: /\.styl$/,
-        loader: 'style-loader!css-loader!stylus-loader'
       },
       {
         test: /\.css$/,
@@ -41,17 +38,11 @@ module.exports = {
       {
         test: /\.(jpg|jpeg|gif|png|ico|ttf|otf|eot|svg|woff|woff2)(\?[a-z0-9]+)?$/,
         loader: 'file-loader?name=[path][name].[ext]'
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
       }
     ]
   },
-  stylus: {
-    use: [require('nib')()],
-    import: ['~nib/lib/nib/index.styl']
-  },
+  // stylus: {
+  // },
   node: {
     net: 'empty',
     tls: 'empty',

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { REHYDRATE } from 'redux-persist/constants'
+// import { REHYDRATE } from 'redux-persist/constants'
 
 const actionTypes = {
   CLEAR_BACKGROUND_IMAGE: 'CLEAR_BACKGROUND_IMAGE',
@@ -24,15 +24,15 @@ const image = (state = null, action) => {
       return action.image
     case actionTypes.CLEAR_BACKGROUND_IMAGE:
       return null
-    case REHYDRATE:
-      if (
-        action.payload.preferences &&
-        action.payload.preferences.background &&
-        action.payload.preferences.background.image
-      ) {
-        return action.payload.preferences.background.image
-      }
-      return state
+    // case REHYDRATE:
+    //   if (
+    //     action.payload.preferences &&
+    //     action.payload.preferences.background &&
+    //     action.payload.preferences.background.image
+    //   ) {
+    //     return action.payload.preferences.background.image
+    //   }
+    //   return state
     default:
       return state
   }

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 const NewListPlaceholder = ({ onAddList }) =>
   <div className="desk-container new-list-placeholder-container">

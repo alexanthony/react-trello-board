@@ -1,4 +1,4 @@
-import { REHYDRATE } from 'redux-persist/constants'
+// import { REHYDRATE } from 'redux-persist/constants'
 import shortid from 'shortid'
 
 import { randomColour } from '../utils'
@@ -67,10 +67,10 @@ export const reducer = (state = {}, action) => {
       newState = { ...state }
       delete newState[action.labelId]
       return newState
-    case REHYDRATE:
-      incoming = action.payload.labelTypes
-      if (incoming) return { ...state, ...incoming }
-      return state
+    // case REHYDRATE:
+    //   incoming = action.payload.labelTypes
+    //   if (incoming) return { ...state, ...incoming }
+    //   return state
     default:
       return state
   }
