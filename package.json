@@ -31,6 +31,7 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.86.0",
     "shortid": "^2.2.14",
+    "styled-components": "4.2.0",
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {

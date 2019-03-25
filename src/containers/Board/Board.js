@@ -5,10 +5,32 @@ import { DragDropContext } from 'react-beautiful-dnd'
 
 import { ListActions } from '../../redux/lists'
 
-import CardsContainer from './Cards/CardsContainer'
 import CardModal from '../EditCard/CardModal'
 import NewListPlaceholder from './NewListPlaceholder'
 import { Droppable } from 'react-beautiful-dnd'
+import styled from 'styled-components'
+import List from './List'
+
+const BoardContainer = styled.div`
+  flex-grow: 1;
+  position: relative;
+  overflow-y: auto;
+`
+
+const BoardInner = styled.div`
+  ${'' /* overflow-x: auto;
+  overflow-y: hidden; */}
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  user-select: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 0;
+`
 
 class Board extends Component {
   static propTypes = {
@@ -51,16 +73,12 @@ class Board extends Component {
     return (
       <DragDropContext onDragEnd={this.handleDragEnd}>
         <CardModal />
-        <div className="board">
+        <BoardContainer>
           <Droppable droppableId="board" direction="horizontal" type="list">
             {provided => (
-              <div
-                className="board-inner"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
+              <BoardInner {...provided.droppableProps} ref={provided.innerRef}>
                 {lists.map((item, i) => (
-                  <CardsContainer
+                  <List
                     key={item.id}
                     id={item.id}
                     item={item}
@@ -71,10 +89,10 @@ class Board extends Component {
                 ))}
                 {provided.placeholder}
                 <NewListPlaceholder onAddList={this.props.addList} />
-              </div>
+              </BoardInner>
             )}
           </Droppable>
-        </div>
+        </BoardContainer>
       </DragDropContext>
     )
   }

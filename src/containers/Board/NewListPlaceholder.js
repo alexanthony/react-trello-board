@@ -1,17 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const NewListPlaceholder = ({ onAddList }) =>
-  <div className="desk-container new-list-placeholder-container">
-    <div className="desk new-list-placeholder" onClick={onAddList}>
-      <div className="desk-head new-list-head">
-        <a href="#">Add a list...</a>
-      </div>
-    </div>
-  </div>
+import styled from 'styled-components'
+import ListContainer from './ListContainer'
+
+const NewListContainer = styled(ListContainer)`
+  background-color: rgba(0, 0, 0, 0.12);
+  min-height: 30px;
+  box-shadow: none;
+
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+  }
+
+  & a {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  &:hover a {
+    color: rgba(255, 255, 255, 0.8);
+  }
+`
+const NewListLink = styled.a`
+  padding: 10px;
+`
+
+const NewListPlaceholder = ({ onAddList }) => (
+  <NewListContainer onClick={onAddList}>
+    <NewListLink href="#">Add a list...</NewListLink>
+  </NewListContainer>
+)
 
 NewListPlaceholder.propTypes = {
-  onAddList: PropTypes.func.isRequired
+  onAddList: PropTypes.func.isRequired,
 }
 
 export default NewListPlaceholder
