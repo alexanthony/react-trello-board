@@ -5,44 +5,53 @@ import { connect } from 'react-redux'
 import { EditActions } from '../../../redux/edit'
 import { labelsByCardSelector } from '../../../redux'
 import Labels from './Labels'
+import { Draggable } from 'react-beautiful-dnd'
 
 const propTypes = {
   item: PropTypes.object.isRequired,
   style: PropTypes.object,
   onCardClick: PropTypes.func,
-  labels: PropTypes.array
+  labels: PropTypes.array,
 }
 
 const Card = props => {
   const { style, item, onCardClick, labels } = props
 
   return (
-    <div
-      onClick={() => onCardClick(item.id)}
-      style={style}
-      className="item"
-      id={style ? item.id : null}
-    >
-      <div className="item-container">
-        <div className="item-content">
-          <div className="item-name">
-            {item.title}
+    <Draggable draggableId={item.id} index={props.y}>
+      {provided => (
+        <div
+          onClick={() => onCardClick(item.id)}
+          style={style}
+          className="item"
+          id={style ? item.id : null}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          <div className="item-container">
+            <div className="item-content">
+              <div className="item-name">{item.title}</div>
+            </div>
           </div>
+          <Labels labels={labels} />
         </div>
-      </div>
-      <Labels labels={labels} />
-    </div>
+      )}
+    </Draggable>
   )
 }
 
 Card.propTypes = propTypes
 
 const mapStateToProps = (state, ownProps) => ({
-  labels: labelsByCardSelector(state)[ownProps.item.id]
+  labels: labelsByCardSelector(state)[ownProps.item.id],
 })
 
-const mapDispatchToProps = dispatch => ({
-  onCardClick: id => dispatch(EditActions.setEditCard(id))
-})
+const mapDispatchToProps = {
+  onCardClick: EditActions.setEditCard,
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Card)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Card)

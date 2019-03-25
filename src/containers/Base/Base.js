@@ -18,6 +18,7 @@ const BaseContainer = props => {
     style.backgroundSize = 'cover'
   }
 
+  // Naughty - side effect in render...
   if (document.title !== props.boardTitle) {
     document.title = props.boardTitle
   }

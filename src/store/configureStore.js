@@ -8,17 +8,18 @@ import rootReducer from '../redux'
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['ui', 'edit']
+  blacklist: ['ui', 'edit'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const configureStore = initialState => {
   const store = createStore(
     persistedReducer,
     initialState,
-      window.devToolsExtension ? window.devToolsExtension() : f => f,
-
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 
   if (module.hot) {
@@ -34,7 +35,7 @@ const configureStore = initialState => {
   // begin periodically persisting the store
   const persistor = persistStore(store)
 
-  return {store, persistor}
+  return { store, persistor }
 }
 
 export default configureStore

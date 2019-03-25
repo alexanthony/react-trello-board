@@ -1,85 +1,47 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 import { ListActions } from '../../redux/lists'
 
 import CardsContainer from './Cards/CardsContainer'
-import CustomDragLayer from './CustomDragLayer'
 import CardModal from '../EditCard/CardModal'
 import NewListPlaceholder from './NewListPlaceholder'
+import { Droppable } from 'react-beautiful-dnd'
 
 class Board extends Component {
   static propTypes = {
     moveCard: PropTypes.func.isRequired,
     moveList: PropTypes.func.isRequired,
     lists: PropTypes.array.isRequired,
-    addList: PropTypes.func.isRequired
+    addList: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.moveCard = this.moveCard.bind(this)
-    this.moveList = this.moveList.bind(this)
-    this.findList = this.findList.bind(this)
-    this.scrollRight = this.scrollRight.bind(this)
-    this.scrollLeft = this.scrollLeft.bind(this)
-    this.stopScrolling = this.stopScrolling.bind(this)
-    this.startScrolling = this.startScrolling.bind(this)
-    this.state = { isScrolling: false }
+  moveCard = params => {
+    const { source, destination } = params
+    if (!destination) return
+    this.props.moveCard(
+      parseInt(source.droppableId, 10),
+      source.index,
+      parseInt(destination.droppableId, 10),
+      destination.index
+    )
   }
 
-  startScrolling(direction) {
-    // if (!this.state.isScrolling) {
-    switch (direction) {
-      case 'toLeft':
-        this.setState({ isScrolling: true }, this.scrollLeft())
-        break
-      case 'toRight':
-        this.setState({ isScrolling: true }, this.scrollRight())
-        break
-      default:
-        break
-    }
-    // }
+  moveList = params => {
+    const { source, destination } = params
+    if (!destination) return
+    this.props.moveList(source.index, destination.index)
   }
 
-  scrollRight() {
-    function scroll() {
-      document.getElementsByTagName('main')[0].scrollLeft += 10
-    }
-    this.scrollInterval = setInterval(scroll, 10)
-  }
-
-  scrollLeft() {
-    function scroll() {
-      document.getElementsByTagName('main')[0].scrollLeft -= 10
-    }
-    this.scrollInterval = setInterval(scroll, 10)
-  }
-
-  stopScrolling() {
-    this.setState({ isScrolling: false }, clearInterval(this.scrollInterval))
-  }
-
-  moveCard(lastX, lastY, nextX, nextY) {
-    this.props.moveCard(lastX, lastY, nextX, nextY)
-  }
-
-  moveList(listId, nextX) {
-    const { lastX } = this.findList(listId)
-    this.props.moveList(lastX, nextX)
-  }
-
-  findList(id) {
-    const { lists } = this.props
-    const list = lists.filter(l => l.id === id)[0]
-
-    return {
-      list,
-      lastX: lists.indexOf(list)
+  handleDragEnd = params => {
+    // console.log(params)
+    const { type } = params
+    if (type === 'list') {
+      this.moveList(params)
+    } else {
+      this.moveCard(params)
     }
   }
 
@@ -87,42 +49,48 @@ class Board extends Component {
     const { lists } = this.props
 
     return (
-      <div className="board">
-        <div className="board-inner">
-          <CardModal />
-          <CustomDragLayer snapToGrid={false} />
-          {lists.map((item, i) =>
-            <CardsContainer
-              key={item.id}
-              id={item.id}
-              item={item}
-              moveCard={this.moveCard}
-              moveList={this.moveList}
-              startScrolling={this.startScrolling}
-              stopScrolling={this.stopScrolling}
-              isScrolling={this.state.isScrolling}
-              x={i}
-            />
-          )}
-          <NewListPlaceholder onAddList={this.props.addList} />
+      <DragDropContext onDragEnd={this.handleDragEnd}>
+        <CardModal />
+        <div className="board">
+          <Droppable droppableId="board" direction="horizontal" type="list">
+            {provided => (
+              <div
+                className="board-inner"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {lists.map((item, i) => (
+                  <CardsContainer
+                    key={item.id}
+                    id={item.id}
+                    item={item}
+                    moveCard={this.moveCard}
+                    moveList={this.moveList}
+                    x={i}
+                  />
+                ))}
+                {provided.placeholder}
+                <NewListPlaceholder onAddList={this.props.addList} />
+              </div>
+            )}
+          </Droppable>
         </div>
-      </div>
+      </DragDropContext>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  lists: state.lists.lists
+  lists: state.lists.lists,
 })
 
-const mapDispatchToProps = dispatch => ({
-  moveCard: (lastX, lastY, nextX, nextY) =>
-    dispatch(ListActions.moveCard(lastX, lastY, nextX, nextY)),
-  moveList: (lastX, nextX) => dispatch(ListActions.moveList(lastX, nextX)),
-  addList: () => dispatch(ListActions.addList())
-})
-// bindActionCreators(ListsActions, dispatch)
+const mapDispatchToProps = {
+  moveCard: ListActions.moveCard,
+  moveList: ListActions.moveList,
+  addList: ListActions.addList,
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  DragDropContext(HTML5Backend)(Board)
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Board)

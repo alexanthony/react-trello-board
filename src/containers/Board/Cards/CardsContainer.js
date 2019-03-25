@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { DropTarget, DragSource } from 'react-dnd'
 import { connect } from 'react-redux'
 import { RIEInput } from 'riek'
 import { Button, Popup, Header, Divider } from 'semantic-ui-react'
@@ -8,11 +7,10 @@ import { Button, Popup, Header, Divider } from 'semantic-ui-react'
 import { ListActions } from '../../../redux/lists'
 import Cards from './Cards'
 import { cardsByListSelector } from '../../../redux'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 
 class CardsContainer extends Component {
   static propTypes = {
-    connectDropTarget: PropTypes.func.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
     item: PropTypes.object,
     x: PropTypes.number,
     moveCard: PropTypes.func.isRequired,
@@ -24,7 +22,7 @@ class CardsContainer extends Component {
     addCard: PropTypes.func,
     setListName: PropTypes.func,
     cards: PropTypes.array,
-    deleteList: PropTypes.func
+    deleteList: PropTypes.func,
   }
 
   constructor(props) {
@@ -47,127 +45,93 @@ class CardsContainer extends Component {
   }
 
   render() {
-    const {
-      connectDropTarget,
-      connectDragSource,
-      item,
-      x,
-      moveCard,
-      isDragging,
-      cards
-    } = this.props
+    const { item, x, moveCard, isDragging, cards } = this.props
     const opacity = isDragging ? 0.5 : 1
 
-    return connectDragSource(
-      connectDropTarget(
-        <div className="desk-container">
-          <div className="desk" style={{ opacity }}>
-            <div className="desk-head">
-              <div className="desk-name">
-                <RIEInput
-                  propName="name"
-                  value={item.name}
-                  change={this.onListTitleChange}
-                  className="desk-name-base"
-                  classEditing="desk-name-editing"
-                />
-              </div>
-              <div>
-                <Popup
-                  trigger={
-                    <Button
-                      icon="ellipsis vertical"
-                      className="list-menu-button"
-                      size="mini"
-                    />
-                  }
-                  on="click"
-                  position="right-center"
-                  basic
+    return (
+      <Draggable draggableId={`${this.props.x}`} index={this.props.x}>
+        {draggableProvided => (
+          <div
+            className="desk-container"
+            {...draggableProvided.draggableProps}
+            {...draggableProvided.dragHandleProps}
+            ref={draggableProvided.innerRef}
+          >
+            <Droppable droppableId={`${this.props.x}`} type="card">
+              {provided => (
+                <div
+                  className="desk"
+                  style={{ opacity }}
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
                 >
-                  <div className="list-menu">
-                    <Header size="small">List Actions</Header>
-                    <Divider />
-                    <a href="#" onClick={this.onDeleteList}>
-                      Delete List
-                    </a>
+                  <div className="desk-head">
+                    <div className="desk-name">
+                      <RIEInput
+                        propName="name"
+                        value={item.name}
+                        change={this.onListTitleChange}
+                        className="desk-name-base"
+                        classEditing="desk-name-editing"
+                      />
+                    </div>
+                    <div>
+                      <Popup
+                        trigger={
+                          <Button
+                            icon="ellipsis vertical"
+                            className="list-menu-button"
+                            size="mini"
+                          />
+                        }
+                        on="click"
+                        position="right-center"
+                        basic
+                      >
+                        <div className="list-menu">
+                          <Header size="small">List Actions</Header>
+                          <Divider />
+                          <a href="#" onClick={this.onDeleteList}>
+                            Delete List
+                          </a>
+                        </div>
+                      </Popup>
+                    </div>
                   </div>
-                </Popup>
-              </div>
-            </div>
-            <Cards
-              moveCard={moveCard}
-              x={x}
-              cards={cards}
-              startScrolling={this.props.startScrolling}
-              stopScrolling={this.props.stopScrolling}
-              isScrolling={this.props.isScrolling}
-            />
-            <a className="add-card" href="#" onClick={this.onAddClicked}>
-              Add a card...
-            </a>
+                  <Cards
+                    moveCard={moveCard}
+                    x={x}
+                    cards={cards}
+                    startScrolling={this.props.startScrolling}
+                    stopScrolling={this.props.stopScrolling}
+                    isScrolling={this.props.isScrolling}
+                  />
+                  {provided.placeholder}
+                  <a className="add-card" href="#" onClick={this.onAddClicked}>
+                    Add a card...
+                  </a>
+                </div>
+              )}
+            </Droppable>
           </div>
-        </div>
-      )
+        )}
+      </Draggable>
     )
   }
 }
 
-const listSource = {
-  beginDrag(props) {
-    return {
-      id: props.id,
-      x: props.x
-    }
-  },
-  endDrag(props) {
-    props.stopScrolling()
-  }
-}
-
-const listTarget = {
-  canDrop() {
-    return false
-  },
-  hover(props, monitor) {
-    if (!props.isScrolling) {
-      if (window.innerWidth - monitor.getClientOffset().x < 200) {
-        props.startScrolling('toRight')
-      } else if (monitor.getClientOffset().x < 200) {
-        props.startScrolling('toLeft')
-      }
-    } else {
-      if (
-        window.innerWidth - monitor.getClientOffset().x > 200 &&
-        monitor.getClientOffset().x > 200
-      ) {
-        props.stopScrolling()
-      }
-    }
-    const { id: listId } = monitor.getItem()
-    const { id: nextX } = props
-    if (listId !== nextX) {
-      props.moveList(listId, props.x)
-    }
-  }
-}
-
 const mapStateToProps = (state, ownProps) => ({
-  cards: cardsByListSelector(state)[ownProps.item.id]
+  cards: cardsByListSelector(state)[ownProps.item.id],
 })
 
 const mapDispatchToProps = dispatch => ({
   addCard: listId => dispatch(ListActions.addCard(listId, 'New Card')),
   setListName: (listId, newName) =>
     dispatch(ListActions.setListName(listId, newName)),
-  deleteList: listId => dispatch(ListActions.deleteList(listId))
+  deleteList: listId => dispatch(ListActions.deleteList(listId)),
 })
 
-export default DropTarget('list', listTarget, connectDragSource => ({
-  connectDropTarget: connectDragSource.dropTarget()
-}))(
-  DragSource('list', listSource, (connectDragSource, monitor) => ({
-    connectDragSource: connectDragSource.dragSource(),
-    isDragging: monitor.isDragging()
-  }))(connect(mapStateToProps, mapDispatchToProps)(CardsContainer))
-)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CardsContainer)
