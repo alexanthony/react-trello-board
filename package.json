@@ -27,7 +27,6 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "reselect": "^4.0.0",
-    "riek": "^1.1.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.86.0",
     "shortid": "^2.2.14",

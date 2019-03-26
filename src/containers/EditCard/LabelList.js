@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { RIEInput } from 'riek'
+import InlineTextEdit from '../InlineTextEdit'
 
 import LabelDropdownItem from './LabelDropdownItem'
 
@@ -10,10 +10,10 @@ const LabelList = ({
   toggleLabel,
   toggleLabelEdit,
   addLabelType,
-  style
-}) =>
+  style,
+}) => (
   <div style={style}>
-    {labelTypes.map(labelType =>
+    {labelTypes.map(labelType => (
       <LabelDropdownItem
         key={labelType.id}
         labelType={labelType}
@@ -24,17 +24,17 @@ const LabelList = ({
           -1
         }
       />
-    )}
+    ))}
     <div className="add-label-container">
-      <RIEInput
+      <InlineTextEdit
         value="Add a label"
-        propName="description"
-        change={addLabelType}
-        className="add-label"
-        classEditing="add-label-editing"
+        onChange={addLabelType}
+        small
+        editingBackground="rgba(0, 0, 0, 0.12)"
       />
     </div>
   </div>
+)
 
 LabelList.propTypes = {
   labelTypes: PropTypes.array,
@@ -42,7 +42,7 @@ LabelList.propTypes = {
   toggleLabel: PropTypes.func,
   toggleLabelEdit: PropTypes.func,
   addLabelType: PropTypes.func,
-  style: PropTypes.object
+  style: PropTypes.object,
 }
 
 export default LabelList

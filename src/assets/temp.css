@@ -85,41 +85,6 @@ code {
   width: 100%;
 }
 
-.desk-name-base {
-  width: 100%;
-  display: block;
-}
-
-.desk-name-editing,
-.card-title-editing {
-  border: none;
-  outline: 0;
-  border-radius: 3px;
-  min-height: 18px;
-  padding-bottom: 2px;
-}
-
-.card-description {
-  width: 100%;
-  display: block;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.12);
-  font-size: 14px;
-  border-radius: 3px;
-  min-height: 40px;
-  margin: 20px 0;
-}
-
-.card-description:hover {
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.card-description-editing {
-  border: none;
-  outline: 0;
-  border-radius: 3px;
-}
-
 .card-list-name {
   padding: 5px;
 }
@@ -198,26 +163,6 @@ code {
 button.swatch-button {
   height: 30px;
   margin-left: 5px;
-}
-
-.add-label {
-  color: #acacac;
-  width: 100%;
-  padding: 10px 0;
-}
-
-.add-label:hover {
-  color: #4d4d4d;
-  text-decoration: underline;
-}
-
-.add-label-editing {
-  padding: 5px;
-  border: none;
-  outline: 0;
-  background-color: rgba(0, 0, 0, 0.12);
-  border-radius: 3px;
-  color: #000;
 }
 
 .add-label-container {

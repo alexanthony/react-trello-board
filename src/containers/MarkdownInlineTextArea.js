@@ -1,6 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
+import useInlineEdit from './useInlineEdit'
+import styled, { css } from 'styled-components'
 
 const rowsOfText = text => text.split('\n').length
 const greaterOfSpecifiedRowsAndRowsOfText = (text, specifiedRows) => {
@@ -9,109 +11,83 @@ const greaterOfSpecifiedRowsAndRowsOfText = (text, specifiedRows) => {
 }
 
 const placeholderIfBlank = text =>
-  text && text !== '' ? text : 'Click to edit description...'
+  text ? text : 'Click to edit description...'
 
-class MarkdownInlineTextArea extends Component {
-  static defaultProps = {
-    className: '',
-    classNameEditing: '',
-    rows: 3,
-    autoHeight: true
+const text = css`
+  width: 100%;
+  display: block;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  border-radius: 3px;
+  min-height: 40px;
+  margin: 20px 0;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
   }
-  static propTypes = {
-    onChange: PropTypes.func,
-    value: PropTypes.string,
-    className: PropTypes.string,
-    classNameEditing: PropTypes.string,
-    rows: PropTypes.number,
-    autoHeight: PropTypes.bool
-  }
-  constructor(props) {
-    super(props)
-    this.state = { editing: false, text: '' }
-  }
+`
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== this.props.value) {
-      this.setState({ text: nextProps.value })
-    }
-  }
+const TextArea = styled.textarea`
+  ${text}
+  border: none;
+  outline: 0;
+  border-radius: 3px;
+`
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if (this.state.editing && !prevState.editing) {
-      this.textArea.focus()
-    } else if (this.state.editing && prevProps.value !== this.props.value) {
-      this.finishEditing()
-    }
-  }
+const Text = styled.div`
+  ${text}
+`
 
-  onStartEditing = () => {
-    this.setState({
-      editing: true,
-      text: this.props.value
-    })
-    if (this.textArea) this.textArea.focus()
-  }
-
-  onStopEditing = () => {
-    this.setState({ editing: false })
-    this.finishEditing()
-  }
-
-  onChange = event => {
-    this.setState({ text: event.target.value })
-  }
-
-  onKeyDown = event => {
-    if (event.keyCode === 27) {
-      // Escape
-      this.cancelEditing()
-    }
-  }
-
-  finishEditing = () => {
-    if (this.state.text !== this.props.value) {
-      this.props.onChange(this.state.text)
-    }
-  }
-
-  cancelEditing = () => {
-    this.setState({ editing: false, text: this.props.value })
-  }
-
-  render() {
-    if (this.state.editing) {
-      return (
-        <textarea
-          rows={
-            this.props.autoHeight
-              ? greaterOfSpecifiedRowsAndRowsOfText(
-                  this.state.text,
-                  this.props.rows
-                )
-              : this.props.rows
-          }
-          className={`${this.props.className} ${this.props.classNameEditing}`}
-          value={this.state.text}
-          onBlur={this.onStopEditing}
-          onKeyDown={this.onKeyDown}
-          onChange={this.onChange}
-          ref={textArea => {
-            this.textArea = textArea
-          }}
-        />
-      )
-    }
+export const MarkdownInlineTextArea = ({
+  onChange,
+  value,
+  autoHeight,
+  rows,
+  className,
+  classNameEditing,
+}) => {
+  const {
+    onChangeText,
+    onFinishEditing,
+    onStartEditing,
+    inputEl,
+    text,
+    editing,
+    onKeyDown,
+  } = useInlineEdit(value, onChange)
+  if (editing) {
     return (
-      <div className={this.props.className} onClick={this.onStartEditing}>
-        <ReactMarkdown
-          escapeHtml
-          source={placeholderIfBlank(this.props.value)}
-          onClick={this.onStartEditing}
-        />
-      </div>
+      <TextArea
+        rows={
+          autoHeight ? greaterOfSpecifiedRowsAndRowsOfText(text, rows) : rows
+        }
+        className={`${className} ${classNameEditing}`}
+        value={text}
+        onBlur={onFinishEditing}
+        onKeyDown={onKeyDown}
+        onChange={event => onChangeText(event.target.value)}
+        ref={inputEl}
+      />
     )
   }
+  return (
+    <Text className={className} onClick={onStartEditing}>
+      <ReactMarkdown
+        escapeHtml
+        source={placeholderIfBlank(value)}
+        onClick={onStartEditing}
+      />
+    </Text>
+  )
+}
+
+MarkdownInlineTextArea.propTypes = {
+  onChange: PropTypes.func,
+  value: PropTypes.string,
+  className: PropTypes.string,
+  classNameEditing: PropTypes.string,
+  rows: PropTypes.number,
+  autoHeight: PropTypes.bool,
 }
 
 export default MarkdownInlineTextArea

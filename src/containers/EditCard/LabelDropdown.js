@@ -5,7 +5,7 @@ import { Header, Divider } from 'semantic-ui-react'
 
 import {
   labelTypesArraySelector,
-  selectedCardLabelsSelector
+  selectedCardLabelsSelector,
 } from '../../redux'
 import { LabelActions } from '../../redux/labelTypes'
 import LabelList from './LabelList'
@@ -15,12 +15,12 @@ class LabelDropdown extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      editingLabel: null
+      editingLabel: null,
     }
   }
 
-  addLabelType = update => {
-    this.props.addLabelType(update.description)
+  addLabelType = description => {
+    this.props.addLabelType(description)
   }
 
   toggleLabel = labelId => {
@@ -70,16 +70,19 @@ LabelDropdown.propTypes = {
   labelTypes: PropTypes.array,
   addLabelType: PropTypes.func,
   onToggleLabel: PropTypes.func,
-  selectedCardLabels: PropTypes.array
+  selectedCardLabels: PropTypes.array,
 }
 
 const mapStateToProps = state => ({
   labelTypes: labelTypesArraySelector(state),
-  selectedCardLabels: selectedCardLabelsSelector(state)
+  selectedCardLabels: selectedCardLabelsSelector(state),
 })
 
 const mapDispatchToProps = dispatch => ({
-  addLabelType: description => dispatch(LabelActions.addLabelType(description))
+  addLabelType: description => dispatch(LabelActions.addLabelType(description)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LabelDropdown)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LabelDropdown)

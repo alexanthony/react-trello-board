@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { RIEInput } from 'riek'
 import { Button, Popup, Header, Divider } from 'semantic-ui-react'
 
 import { ListActions } from '../../redux/lists'
@@ -10,6 +9,7 @@ import { cardsByListSelector } from '../../redux'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import ListContainer from './ListContainer'
+import InlineTextEdit from '../InlineTextEdit'
 
 const ListHeader = styled.div`
   padding: 5px 8px;
@@ -67,8 +67,8 @@ class List extends Component {
     this.props.addCard(this.props.x)
   }
 
-  onListTitleChange = update => {
-    this.props.setListName(this.props.item.id, update.name)
+  onListTitleChange = newName => {
+    this.props.setListName(this.props.item.id, newName)
   }
 
   onDeleteList = () => {
@@ -89,12 +89,11 @@ class List extends Component {
           >
             <ListHeader>
               <ListName>
-                <RIEInput
-                  propName="name"
+                <InlineTextEdit
                   value={item.name}
-                  change={this.onListTitleChange}
-                  className="desk-name-base"
-                  classEditing="desk-name-editing"
+                  onChange={this.onListTitleChange}
+                  small
+                  bold
                 />
               </ListName>
               <Popup
