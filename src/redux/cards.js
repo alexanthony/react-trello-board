@@ -1,5 +1,3 @@
-// import { REHYDRATE } from 'redux-persist/constants'
-
 import { actionTypes as ListActionTypes } from './lists'
 import { isBlank } from '../utils'
 import { actionTypes as LabelActionTypes } from './labelTypes'
@@ -7,25 +5,25 @@ import { actionTypes as LabelActionTypes } from './labelTypes'
 export const actionTypes = {
   SET_CARD_TITLE: 'SET_CARD_TITLE',
   SET_CARD_DESCRIPTION: 'SET_CARD_DESCRIPTION',
-  TOGGLE_LABEL: 'TOGGLE_LABEL'
+  TOGGLE_LABEL: 'TOGGLE_LABEL',
 }
 
 const actionCreators = {
   setCardTitle: (cardId, newTitle) => ({
     type: actionTypes.SET_CARD_TITLE,
     cardId,
-    newTitle: isBlank(newTitle) ? 'Card' : newTitle
+    newTitle: isBlank(newTitle) ? 'Card' : newTitle,
   }),
   setCardDescription: (cardId, newDescription) => ({
     type: actionTypes.SET_CARD_DESCRIPTION,
     cardId,
-    newDescription
+    newDescription,
   }),
   toggleLabel: (cardId, labelId) => ({
     type: actionTypes.TOGGLE_LABEL,
     cardId,
-    labelId
-  })
+    labelId,
+  }),
 }
 
 export const CardActions = actionCreators
@@ -47,7 +45,7 @@ const card = (state = {}, action) => {
         id: action.cardId,
         title: action.title,
         description: '',
-        labels: []
+        labels: [],
       }
     case actionTypes.SET_CARD_TITLE:
       return { ...state, title: action.newTitle }
@@ -56,7 +54,7 @@ const card = (state = {}, action) => {
     case actionTypes.TOGGLE_LABEL:
       return {
         ...state,
-        labels: toggleItemInList(state.labels, action.labelId)
+        labels: toggleItemInList(state.labels, action.labelId),
       }
     case LabelActionTypes.DELETE_LABEL:
       if (state.labels.indexOf(action.labelId) === -1) {
@@ -64,22 +62,14 @@ const card = (state = {}, action) => {
       }
       return {
         ...state,
-        labels: state.labels.filter(labelType => labelType !== action.labelId)
+        labels: state.labels.filter(labelType => labelType !== action.labelId),
       }
     default:
       return state
   }
 }
 
-const defaultCard = {
-  id: '',
-  title: 'Card title',
-  description: 'Card description',
-  labels: []
-}
-
 export const reducer = (state = {}, action) => {
-  let incoming
   let newState
   switch (action.type) {
     case ListActionTypes.ADD_CARD:
@@ -97,16 +87,6 @@ export const reducer = (state = {}, action) => {
         newState[cardId] = card(state[cardId], action)
       })
       return newState
-    // case REHYDRATE:
-    //   incoming = action.payload.cards
-    //   // Fix any old data
-    //   if (incoming) {
-    //     Object.keys(incoming).forEach(cardId => {
-    //       incoming[cardId] = { ...defaultCard, ...incoming[cardId] }
-    //     })
-    //     return { ...state, ...incoming }
-    //   }
-    //   return state
     default:
       return state
   }

@@ -11,7 +11,7 @@ export const actionTypes = {
   SET_LIST_NAME: 'SET_LIST_NAME',
   ADD_LIST: 'ADD_LIST',
   DELETE_CARD: 'DELETE_CARD',
-  DELETE_LIST: 'DELETE_LIST'
+  DELETE_LIST: 'DELETE_LIST',
 }
 
 const actionCreators = {
@@ -21,37 +21,37 @@ const actionCreators = {
     lastX,
     lastY,
     nextX,
-    nextY
+    nextY,
   }),
   toggleDragging: isDragging => ({
     type: actionTypes.TOGGLE_DRAGGING,
-    isDragging
+    isDragging,
   }),
   addCard: (listId, title) => ({
     type: actionTypes.ADD_CARD,
     title,
     listId,
-    cardId: shortid.generate()
+    cardId: shortid.generate(),
   }),
 
   setListName: (listId, newName) => ({
     type: actionTypes.SET_LIST_NAME,
     listId,
-    newName: isBlank(newName) ? 'List' : newName
+    newName: isBlank(newName) ? 'List' : newName,
   }),
 
   addList: () => ({
-    type: actionTypes.ADD_LIST
+    type: actionTypes.ADD_LIST,
   }),
 
   deleteCard: cardId => ({
     type: actionTypes.DELETE_CARD,
-    cardId
+    cardId,
   }),
   deleteList: listId => ({
     type: actionTypes.DELETE_LIST,
-    listId
-  })
+    listId,
+  }),
 }
 
 export const ListActions = actionCreators
@@ -59,13 +59,12 @@ export const ListActions = actionCreators
 /* eslint-disable new-cap */
 const initialState = {
   lists: [],
-  isDragging: false
+  isDragging: false,
 }
 // const initialState = new InitialState()
 /* eslint-enable new-cap */
 
 const lists = (state = initialState, action) => {
-  let incoming
   switch (action.type) {
     case actionTypes.MOVE_CARD: {
       const newLists = [...state.lists]
@@ -100,7 +99,7 @@ const lists = (state = initialState, action) => {
       const newLists = [...state.lists]
       newLists[action.listId] = {
         ...newLists[action.listId],
-        cards: [...newLists[action.listId].cards, action.cardId]
+        cards: [...newLists[action.listId].cards, action.cardId],
       }
 
       return { ...state, lists: newLists }
@@ -110,7 +109,7 @@ const lists = (state = initialState, action) => {
       const thisListPos = newLists.findIndex(list => list.id === action.listId)
       newLists[thisListPos] = {
         ...newLists[thisListPos],
-        name: action.newName
+        name: action.newName,
       }
 
       return { ...state, lists: newLists }
@@ -120,7 +119,7 @@ const lists = (state = initialState, action) => {
       newLists.push({
         name: 'New List',
         cards: [],
-        id: newLists.length
+        id: newLists.length,
       })
 
       return { ...state, lists: newLists }
@@ -135,8 +134,8 @@ const lists = (state = initialState, action) => {
       newLists[listWithCardPos] = {
         ...listWithCard,
         cards: [
-          ...listWithCard.cards.filter(cardId => cardId !== action.cardId)
-        ]
+          ...listWithCard.cards.filter(cardId => cardId !== action.cardId),
+        ],
       }
       return { ...state, lists: newLists }
     }
@@ -144,27 +143,6 @@ const lists = (state = initialState, action) => {
       const newLists = state.lists.filter(list => list.id !== action.listId)
       return { ...state, lists: newLists }
     }
-    // case REHYDRATE:
-    //   incoming = action.payload.lists
-    //   if (incoming) {
-    //     // This is our opportunity to tidy data
-    //     // We don't get the chance to refresh it from an API
-    //
-    //     // Check that we have all cards
-    //     const newLists = []
-    //     incoming.lists.forEach(list => {
-    //       const newList = {
-    //         ...list,
-    //         cards: list.cards.filter(
-    //           cardId => cardId && action.payload.cards[cardId]
-    //         )
-    //       }
-    //       newLists.push(newList)
-    //     })
-    //     // We don't bother trying to restore isDragging
-    //     return { ...state, lists: newLists }
-    //   }
-    //   return state
     default:
       return state
   }
