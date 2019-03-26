@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Modal from 'react-modal'
 import { connect } from 'react-redux'
 import { Button, Popup, Header } from 'semantic-ui-react'
 
@@ -18,17 +17,12 @@ import Labels from '../Board/Cards/Labels'
 import InlineTextEdit from '../InlineTextEdit'
 import styled from 'styled-components'
 
-const modalStyle = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  },
-  content: {
-    left: '30%',
-    right: '30%',
-    bottom: '30%',
-    backgroundColor: '#edeff0',
-  },
-}
+const FormWrapper = styled.section`
+  height: 100%;
+  width: 100%;
+  background-color: #f3f3f3;
+  padding: 10px;
+`
 
 const CardListName = styled.div`
   padding: 5px;
@@ -38,7 +32,13 @@ const CardActionsContainer = styled.div`
   margin-top: 20px;
 `
 
-class CardModal extends Component {
+const CloseButton = styled(Button)`
+  position: absolute;
+  top: 4px;
+  right: 4px;
+`
+
+class CardEditForm extends Component {
   state = { showLabelMenu: false }
 
   onTitleChange = newTitle => {
@@ -66,14 +66,10 @@ class CardModal extends Component {
   }
 
   render() {
-    const { showModal, onHideModal, card = { title: '' }, list } = this.props
+    const { onHideModal, card = { title: '' }, list } = this.props
     return (
-      <Modal
-        isOpen={showModal}
-        onRequestClose={onHideModal}
-        onAfterOpen={this.hideLabelMenu}
-        style={modalStyle}
-      >
+      <FormWrapper>
+        <CloseButton icon="times" onClick={onHideModal} />
         <InlineTextEdit value={card.title} onChange={this.onTitleChange} bold />
         <CardListName>
           <span>
@@ -112,13 +108,12 @@ class CardModal extends Component {
             <LabelDropdown onToggleLabel={this.toggleLabel} />
           </Popup>
         </CardActionsContainer>
-      </Modal>
+      </FormWrapper>
     )
   }
 }
 
-CardModal.propTypes = {
-  showModal: PropTypes.bool,
+CardEditForm.propTypes = {
   onHideModal: PropTypes.func,
   card: PropTypes.shape({
     id: PropTypes.string,
@@ -136,7 +131,6 @@ CardModal.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  showModal: state.edit.editCard !== null,
   card: selectedCardSelector(state),
   list: selectedCardListSelector(state),
   labels: labelsByCardSelector(state)[state.edit.editCard],
@@ -159,4 +153,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CardModal)
+)(CardEditForm)

@@ -14,12 +14,12 @@ const rootReducer = combineReducers({
   cards,
   labelTypes,
   ui,
-  preferences
+  preferences,
 })
 
 export default rootReducer
 
-const selectedCardIdSelector = state => state.edit.editCard
+export const selectedCardIdSelector = state => state.edit.editCard
 
 const listsSelector = state => state.lists.lists
 const cardsSelector = state => state.cards

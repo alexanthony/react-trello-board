@@ -5,7 +5,6 @@ import { DragDropContext } from 'react-beautiful-dnd'
 
 import { ListActions } from '../../redux/lists'
 
-import CardModal from '../EditCard/CardModal'
 import NewListPlaceholder from './NewListPlaceholder'
 import { Droppable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
@@ -15,6 +14,7 @@ const BoardContainer = styled.div`
   flex-grow: 1;
   position: relative;
   overflow-y: auto;
+  height: 100%;
 `
 
 const BoardInner = styled.div`
@@ -72,7 +72,6 @@ class Board extends Component {
 
     return (
       <DragDropContext onDragEnd={this.handleDragEnd}>
-        <CardModal />
         <BoardContainer>
           <Droppable droppableId="board" direction="horizontal" type="list">
             {provided => (

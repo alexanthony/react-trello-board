@@ -13,8 +13,8 @@ const CardLabels = styled.div`
 `
 
 const CardLabel = styled(Label)`
-  ${labelStyleCss}
   &&& {
+    ${labelStyleCss}
     margin: 2px;
   }
 `

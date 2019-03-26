@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { EditActions } from '../../../redux/edit'
-import { labelsByCardSelector } from '../../../redux'
+import { labelsByCardSelector, selectedCardIdSelector } from '../../../redux'
 import Labels from './Labels'
 import { Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
@@ -12,6 +12,7 @@ const CardContainer = styled.div`
   width: 90%;
   margin: 0 auto 10px;
   background: #fff;
+  ${props => props.selected && 'background: #99ccff'};
   min-height: 40px;
   border-radius: 5px;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
@@ -19,6 +20,7 @@ const CardContainer = styled.div`
   cursor: pointer;
   &:hover {
     background: #f7f7f7;
+    ${props => props.selected && 'background: #66ccff'};
   }
 `
 
@@ -35,25 +37,27 @@ const propTypes = {
   onCardClick: PropTypes.func,
   labels: PropTypes.array,
   y: PropTypes.number,
+  isSelected: PropTypes.bool,
 }
 
 class Card extends PureComponent {
   handleCardClick = () => {
-    this.props.onCardClick(this.props.item.id)
+    this.props.onCardClick(this.props.isSelected ? null : this.props.item.id)
   }
 
   render() {
-    const { item, labels, y } = this.props
+    const { item, labels, y, isSelected } = this.props
 
     return (
       <Draggable draggableId={item.id} index={y}>
         {provided => (
           <CardContainer
             onClick={this.handleCardClick}
-            id={item ? item.id : null}
+            id={item.id}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
+            selected={isSelected}
           >
             <CardContent>{item.title}</CardContent>
             <Labels labels={labels} />
@@ -68,6 +72,7 @@ Card.propTypes = propTypes
 
 const mapStateToProps = (state, ownProps) => ({
   labels: labelsByCardSelector(state)[ownProps.item.id],
+  isSelected: selectedCardIdSelector(state) === ownProps.item.id,
 })
 
 const mapDispatchToProps = {

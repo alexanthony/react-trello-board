@@ -16,11 +16,6 @@ export const randomLightColour = () => {
   return colour
 }
 
-export const labelStyle = colour => ({
-  backgroundColor: colour,
-  color: tinycolor(colour).isDark() ? '#fff' : '#000',
-})
-
 export const labelStyleCss = css`
   background-color: ${props => props.colour};
   color: ${props => (tinycolor(props.colour).isDark() ? '#fff' : '#000')};
