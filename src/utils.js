@@ -1,4 +1,5 @@
 import tinycolor from 'tinycolor2'
+import { css } from 'styled-components'
 
 export const isBlank = aString => !aString || aString.trim().length === 0
 
@@ -17,5 +18,10 @@ export const randomLightColour = () => {
 
 export const labelStyle = colour => ({
   backgroundColor: colour,
-  color: tinycolor(colour).isDark() ? '#fff' : '#000'
+  color: tinycolor(colour).isDark() ? '#fff' : '#000',
 })
+
+export const labelStyleCss = css`
+  background-color: ${props => props.colour};
+  color: ${props => (tinycolor(props.colour).isDark() ? '#fff' : '#000')};
+`

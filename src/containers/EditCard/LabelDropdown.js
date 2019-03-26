@@ -10,13 +10,24 @@ import {
 import { LabelActions } from '../../redux/labelTypes'
 import LabelList from './LabelList'
 import LabelEdit from './LabelEdit'
+import styled from 'styled-components'
+
+const LabelDropdownWrapper = styled.div`
+  background-color: #fff;
+  width: 260px;
+  padding: 10px;
+  & ul {
+    list-style: none;
+    padding: 0;
+  }
+  & ul li {
+    margin-bottom: 5px;
+  }
+`
 
 class LabelDropdown extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      editingLabel: null,
-    }
+  state = {
+    editingLabel: null,
   }
 
   addLabelType = description => {
@@ -37,8 +48,8 @@ class LabelDropdown extends React.Component {
 
   render() {
     return (
-      <div className="label-dropdown">
-        <Header size="mini">
+      <LabelDropdownWrapper>
+        <Header size="small">
           {this.state.editingLabel ? 'Edit Label' : 'Labels'}
         </Header>
         <Divider />
@@ -49,19 +60,17 @@ class LabelDropdown extends React.Component {
           toggleLabelEdit={this.toggleLabelEdit}
           addLabelType={this.addLabelType}
           // We need the element to be there and hidden, or else the click is deemed to be outside the menu so the popup closes
-          style={{ display: this.state.editingLabel ? 'none' : 'block' }}
+          editing={this.state.editingLabel}
         />
         <LabelEdit
-          labelType={
-            this.props.labelTypes.find(
-              labelType => labelType.id === this.state.editingLabel
-            ) || {}
-          }
+          labelType={this.props.labelTypes.find(
+            labelType => labelType.id === this.state.editingLabel
+          )}
           stopEditing={this.toggleLabelEdit}
           // We need the element to be there and hidden, or else the click is deemed to be outside the menu so the popup closes
-          style={{ display: this.state.editingLabel ? 'block' : 'none' }}
+          editing={this.state.editingLabel}
         />
-      </div>
+      </LabelDropdownWrapper>
     )
   }
 }

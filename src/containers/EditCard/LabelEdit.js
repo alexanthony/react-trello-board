@@ -3,10 +3,28 @@ import PropTypes from 'prop-types'
 import { Button, Input } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { CirclePicker } from 'react-color'
+import styled from 'styled-components'
 
 import { LabelActions } from '../../redux/labelTypes'
 
+const LabelEditWrapper = styled.div`
+  display: ${props => (props.editing ? 'block' : 'none')};
+  margin-bottom: 10px;
+`
+
+const ColourPickerContainer = styled.div`
+  padding: 30px 0;
+`
+
+const LabelActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 class LabelEdit extends React.Component {
+  static defaultProps = {
+    labelType: {},
+  }
   onDescriptionChange = (event, data) => {
     this.props.setLabelDescription(data.value, this.props.labelType.id)
   }
@@ -21,29 +39,29 @@ class LabelEdit extends React.Component {
   }
 
   render() {
-    const { labelType } = this.props
+    const { labelType, editing } = this.props
     return (
-      <div className="label-dropdown-item" style={this.props.style}>
+      <LabelEditWrapper editing={editing}>
         <Input
           onChange={this.onDescriptionChange}
           value={labelType.description}
           size="small"
         />
-        <div style={{ padding: '30px 0' }}>
+        <ColourPickerContainer>
           <CirclePicker
             color={labelType.colour}
             onChangeComplete={this.onColourChange}
           />
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        </ColourPickerContainer>
+        <LabelActionsContainer>
           <Button positive onClick={this.props.stopEditing}>
             Done
           </Button>
           <Button negative onClick={this.deleteLabel}>
             Delete
           </Button>
-        </div>
-      </div>
+        </LabelActionsContainer>
+      </LabelEditWrapper>
     )
   }
 }
@@ -53,8 +71,8 @@ LabelEdit.propTypes = {
   setLabelDescription: PropTypes.func,
   setLabelColour: PropTypes.func,
   deleteLabel: PropTypes.func,
-  style: PropTypes.object,
-  stopEditing: PropTypes.func
+  editing: PropTypes.bool,
+  stopEditing: PropTypes.func,
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -62,7 +80,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(LabelActions.setLabelDescription(description, labelId)),
   setLabelColour: (colour, labelId) =>
     dispatch(LabelActions.setLabelColour(colour, labelId)),
-  deleteLabel: labelId => dispatch(LabelActions.deleteLabel(labelId))
+  deleteLabel: labelId => dispatch(LabelActions.deleteLabel(labelId)),
 })
 
-export default connect(null, mapDispatchToProps)(LabelEdit)
+export default connect(
+  null,
+  mapDispatchToProps
+)(LabelEdit)

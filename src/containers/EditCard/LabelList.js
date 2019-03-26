@@ -1,8 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import InlineTextEdit from '../InlineTextEdit'
-
+import styled from 'styled-components'
 import LabelDropdownItem from './LabelDropdownItem'
+
+const LabelListWrapper = styled.div`
+  display: ${props => (props.editing ? 'none' : 'block')};
+`
+
+const AddLabelWrapper = styled.div`
+  padding-top: 5px;
+`
 
 const LabelList = ({
   labelTypes,
@@ -10,9 +18,9 @@ const LabelList = ({
   toggleLabel,
   toggleLabelEdit,
   addLabelType,
-  style,
+  editing,
 }) => (
-  <div style={style}>
+  <LabelListWrapper editing={editing}>
     {labelTypes.map(labelType => (
       <LabelDropdownItem
         key={labelType.id}
@@ -25,15 +33,15 @@ const LabelList = ({
         }
       />
     ))}
-    <div className="add-label-container">
+    <AddLabelWrapper>
       <InlineTextEdit
         value="Add a label"
         onChange={addLabelType}
         small
         editingBackground="rgba(0, 0, 0, 0.12)"
       />
-    </div>
-  </div>
+    </AddLabelWrapper>
+  </LabelListWrapper>
 )
 
 LabelList.propTypes = {
@@ -42,7 +50,7 @@ LabelList.propTypes = {
   toggleLabel: PropTypes.func,
   toggleLabelEdit: PropTypes.func,
   addLabelType: PropTypes.func,
-  style: PropTypes.object,
+  editing: PropTypes.bool,
 }
 
 export default LabelList

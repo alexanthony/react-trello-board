@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import Header from '../Header'
-import PreferencesModal from '../PreferencesModal'
+import Header from '../Header/Header'
 
 const Main = styled.main`
   ${props =>
@@ -34,7 +33,6 @@ const BaseContainer = props => {
 
   return (
     <Main backgroundImage={props.backgroundImage}>
-      <PreferencesModal />
       <Header boardTitle={props.boardTitle} />
       {props.children}
     </Main>

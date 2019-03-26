@@ -16,6 +16,7 @@ import LabelDropdown from './LabelDropdown'
 import MarkdownInlineTextArea from '../MarkdownInlineTextArea'
 import Labels from '../Board/Cards/Labels'
 import InlineTextEdit from '../InlineTextEdit'
+import styled from 'styled-components'
 
 const modalStyle = {
   overlay: {
@@ -28,11 +29,18 @@ const modalStyle = {
     backgroundColor: '#edeff0',
   },
 }
+
+const CardListName = styled.div`
+  padding: 5px;
+`
+
+const CardActionsContainer = styled.div`
+  margin-top: 20px;
+`
+
 class CardModal extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { showLabelMenu: false }
-  }
+  state = { showLabelMenu: false }
+
   onTitleChange = newTitle => {
     this.props.onTitleChange(this.props.card.id, newTitle)
   }
@@ -67,19 +75,17 @@ class CardModal extends Component {
         style={modalStyle}
       >
         <InlineTextEdit value={card.title} onChange={this.onTitleChange} bold />
-        <div className="card-list-name">
+        <CardListName>
           <span>
             from list <u>{list.name}</u>
           </span>
-        </div>
+        </CardListName>
         {card.description && card.description !== '' && (
           <Header size="small">Description</Header>
         )}
         <MarkdownInlineTextArea
           onChange={this.onDescriptionChange}
           value={card.description}
-          className="card-description"
-          classNameEditing="card-description-editing"
         />
         <a
           href="http://commonmark.org/help/"
@@ -91,8 +97,8 @@ class CardModal extends Component {
         {this.props.labels && this.props.labels.length > 0 && (
           <Header size="small">Labels</Header>
         )}
-        <Labels labels={this.props.labels || []} />
-        <div className="card-actions-container">
+        <Labels labels={this.props.labels} />
+        <CardActionsContainer>
           <Button onClick={this.onDeleteCard}>Delete</Button>
           <Popup
             trigger={<Button>Labels</Button>}
@@ -105,7 +111,7 @@ class CardModal extends Component {
           >
             <LabelDropdown onToggleLabel={this.toggleLabel} />
           </Popup>
-        </div>
+        </CardActionsContainer>
       </Modal>
     )
   }
